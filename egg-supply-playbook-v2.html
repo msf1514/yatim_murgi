@@ -1,0 +1,1185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Egg Trading Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Gotham is a licensed font. If installed or self-hosted it is used first; Montserrat is the closest free match. */
+:root{
+  --bg:#ffffff; --ink:#0a0a0a; --ink2:#3a3a3a; --muted:#6b6b6b; --line:#dedede; --soft:#f4f4f4;
+  --mid:#9a9a9a; --lite:#d0d0d0; --inv:#0a0a0a; --invtext:#ffffff;
+  --font:"Gotham","Gotham SSm","Gotham Book","Montserrat","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;color-scheme:light}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-weight:400;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+a{color:inherit}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(34px,6vw,64px);line-height:1.04;font-weight:800;letter-spacing:-.02em;text-transform:uppercase}
+h2{font-size:clamp(24px,3.4vw,36px);line-height:1.12;font-weight:800;letter-spacing:-.01em;text-transform:uppercase}
+h3{font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+p{color:var(--ink2)}
+nav{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:20px;height:52px;overflow-x:auto;white-space:nowrap}
+nav b{font-weight:800;letter-spacing:.16em;font-size:12px;text-transform:uppercase;margin-right:6px}
+nav a{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+nav a:hover{color:var(--ink)}
+header.hero{padding:72px 0 48px;border-bottom:1px solid var(--line)}
+header.hero p.lead{font-size:clamp(17px,2vw,21px);max-width:760px;margin-top:22px;color:var(--ink)}
+.verdict{margin-top:34px;background:var(--inv);color:var(--invtext);padding:26px 28px}
+.verdict .eyebrow{color:var(--invtext);opacity:.65}
+.verdict p{color:var(--invtext);font-size:17px;font-weight:500;margin-top:8px;max-width:860px}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);margin-top:34px;border:1px solid var(--line)}
+.tile{padding:22px 20px;border-right:1px solid var(--line)}
+.tile:last-child{border-right:0}
+.tile .n{font-size:clamp(24px,3.2vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin-top:8px}
+.tile .s{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.45}
+section{padding:68px 0;border-bottom:1px solid var(--line)}
+section .head{margin-bottom:30px;max-width:780px}
+section .head p{margin-top:12px}
+.num{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--muted);margin-bottom:10px}
+.card{border:1px solid var(--line);padding:22px;background:var(--bg)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.plain{border:1px solid var(--line);border-left:4px solid var(--ink);padding:16px 20px;margin:0 0 26px;background:var(--soft);max-width:860px}
+.plain .eyebrow{color:var(--ink)}
+.plain p{margin-top:6px;font-size:15px;color:var(--ink)}
+.opp{margin-top:26px;background:var(--inv);color:var(--invtext);padding:20px 24px}
+.opp .eyebrow{color:var(--invtext);opacity:.65}
+.opp p,.opp li{color:var(--invtext);font-size:14.5px}
+.opp ul{margin:8px 0 0 18px}
+.opp li{margin-top:5px}
+.callout{border-left:4px solid var(--ink);background:var(--soft);padding:16px 20px;margin-top:22px}
+.callout b{font-weight:700;color:var(--ink)}
+.chart{margin-top:8px;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font-family:var(--font);fill:var(--muted);font-size:11px}
+.chart .lab{fill:var(--ink);font-weight:600}
+.chart .ax{stroke:var(--line);stroke-width:1}
+.chart .grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin:12px 0 4px;font-size:12px;color:var(--ink2)}
+.legend i{display:inline-block;width:22px;height:10px;margin-right:8px;vertical-align:middle}
+.cap{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;text-align:left;color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--ink);white-space:nowrap}
+td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink2)}
+td b,td strong{color:var(--ink);font-weight:700}
+tr:hover td{background:var(--soft)}
+.tw{overflow-x:auto;border:1px solid var(--line)}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);padding:2px 7px;color:var(--ink);white-space:nowrap}
+.tag.f{background:var(--inv);color:var(--invtext)}
+.dots{letter-spacing:2px;font-size:13px;color:var(--ink);white-space:nowrap}
+.dots s{text-decoration:none;color:var(--lite)}
+.bar2{height:10px;background:var(--soft);position:relative}
+.bar2 span{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--inv);color:var(--invtext);padding:9px 12px;font-size:12px;line-height:1.45;max-width:270px;opacity:0;transition:opacity .08s;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+#tip b{font-weight:700}
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.ctl{margin-bottom:18px}
+.ctl label.t{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.ctl label.t span{color:var(--ink);font-size:13px;letter-spacing:0}
+input[type=range]{width:100%;accent-color:#0a0a0a;height:28px}
+.seg{display:flex;border:1px solid var(--ink)}
+.seg label{flex:1;text-align:center;padding:9px 6px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.seg input{display:none}
+.seg input:checked+span{background:var(--inv);color:var(--invtext)}
+.seg span{display:block;margin:-9px -6px;padding:9px 6px}
+.out{background:var(--inv);color:var(--invtext);padding:26px}
+.out .eyebrow{color:var(--invtext);opacity:.65}
+.out .big{font-size:clamp(32px,5vw,50px);font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:6px 0 4px}
+.out .row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid rgba(255,255,255,.25);padding:9px 0;font-size:13px}
+.out .row span:first-child{opacity:.75}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line)}
+.step{padding:22px 18px;border-right:1px solid var(--line)}
+.step:last-child{border-right:0}
+.step .wk{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.step h3{margin:8px 0 10px;font-size:15px}
+.step li{font-size:13px;color:var(--ink2);margin:0 0 7px 16px}
+.chk{list-style:none}
+.chk li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink2)}
+.chk input{margin-top:4px;width:17px;height:17px;accent-color:#0a0a0a;flex:none}
+.chk li b{color:var(--ink)}
+.chk li.done span{text-decoration:line-through;opacity:.5}
+.prog{display:flex;align-items:center;gap:14px;margin-bottom:12px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.prog .bar2{flex:1}
+details{border-bottom:1px solid var(--line);padding:14px 0}
+summary{cursor:pointer;font-weight:700;font-size:14px;letter-spacing:.04em}
+details p,details li{font-size:13.5px;margin-top:10px}
+details ul{margin-left:18px}
+.chain{display:flex;align-items:stretch;border:1px solid var(--line);overflow-x:auto}
+.chain>div{flex:1;min-width:150px;padding:18px 16px;border-right:1px solid var(--line);position:relative}
+.chain>div:last-child{border-right:0}
+.chain .k{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.chain h3{margin:6px 0 6px;font-size:13px}
+.chain p{font-size:12.5px;line-height:1.5}
+.chain .me{background:var(--inv)}
+.chain .me .k,.chain .me h3,.chain .me p{color:var(--invtext)}
+.chain>div:not(:last-child)::after{content:"→";position:absolute;right:-9px;top:50%;transform:translateY(-50%);background:var(--bg);width:18px;text-align:center;font-weight:700;z-index:2}
+.chain .me::after{background:var(--inv)!important;color:var(--invtext)}
+dl.gl{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+dl.gl div{padding:12px 0;border-bottom:1px solid var(--line)}
+dl.gl dt{font-weight:700;font-size:13px;letter-spacing:.04em;color:var(--ink)}
+dl.gl dd{font-size:13.5px;color:var(--ink2);margin-top:2px}
+.cmp{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line)}
+.cmp>div{padding:18px;border-right:1px solid var(--line)}
+.cmp>div:last-child{border-right:0}
+.cmp .p{font-size:26px;font-weight:800;letter-spacing:-.02em;margin:6px 0 8px}
+.cmp p{font-size:12.5px;line-height:1.5}
+.src a{display:block;font-size:12px;color:var(--muted);margin:5px 0;word-break:break-all}
+footer{padding:44px 0 70px}
+footer p{font-size:12px;color:var(--muted);max-width:780px}
+@media(max-width:900px){
+  .tiles{grid-template-columns:1fr 1fr}.tile:nth-child(2){border-right:0}.tile:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .grid2,.grid3,.calc,dl.gl{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr 1fr}.step:nth-child(2){border-right:0}.step:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .cmp{grid-template-columns:1fr 1fr}.cmp>div:nth-child(2){border-right:0}.cmp>div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+}
+@media(max-width:520px){.wrap{padding:0 16px}.steps,.cmp{grid-template-columns:1fr}.step,.cmp>div{border-right:0;border-bottom:1px solid var(--line)}header.hero{padding-top:48px}section{padding:48px 0}}
+@media print{nav{display:none}section{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div id="tip" role="status"></div>
+
+<nav>
+  <div class="wrap">
+    <b>Egg Playbook</b>
+    <a href="#start">Start here</a><a href="#basics">Egg basics</a><a href="#price">Prices</a><a href="#econ">Your numbers</a><a href="#breed">Breeds</a><a href="#opps">Opportunities</a><a href="#buyers">Buyers</a><a href="#rules">Rules</a><a href="#ops">Operations</a><a href="#plan">30 days</a><a href="#risks">Risks</a>
+  </div>
+</nav>
+
+<!-- COVER -->
+<header class="hero" id="start">
+  <div class="wrap">
+    <div class="eyebrow">Bangalore · Egg trading · Prepared 5 Nov 2026</div>
+    <h1 style="margin-top:14px">The egg trading<br>playbook</h1>
+    <p class="lead">A guide to buying eggs at ₹8, selling at ₹10, and finding where the real money is. It explains each term as it comes up, so you don't need to know the egg business to follow it.</p>
+
+    <div class="verdict">
+      <div class="eyebrow">The short answer</div>
+      <p>At ₹8 in and ₹10 out, a ₹2 gap is not enough to run a hired-help business at about 1,350 eggs a day. It loses roughly ₹64,000 a month. Run by the owner with almost no overhead it breaks even. The money is in four moves: buy nearer ₹7.50, sell nearer ₹10.50 with graded and clean eggs, add a small genuine country-egg line, and grow to about 3,000 eggs a day.</p>
+    </div>
+
+    <div class="tiles">
+      <div class="tile"><div class="eyebrow">Your margin today</div><div class="n">₹2.00</div><div class="s">per egg: ₹10 sell minus ₹8 buy, before any costs</div></div>
+      <div class="tile"><div class="eyebrow">Left after costs</div><div class="n">₹0.04</div><div class="s">per egg if you run lean. −₹1.57 with a hired helper.</div></div>
+      <div class="tile"><div class="eyebrow">Best single move</div><div class="n">Buy at NECC + ₹0.50</div><div class="s">about ₹7.50 now. Worth about ₹20,000 a month.</div></div>
+      <div class="tile"><div class="eyebrow">Never label as</div><div class="n">“Country”</div><div class="s">BV380 is a hybrid. That label is misbranding.</div></div>
+    </div>
+
+    <div class="grid2" style="margin-top:34px">
+      <div class="card">
+        <h3>What I assumed (please check)</h3>
+        <ul style="margin:12px 0 0 18px;font-size:14px;color:var(--ink2)">
+          <li style="margin-bottom:6px"><b>Volume:</b> 1,200–1,500 eggs a day (12,000–15,000 every 10 days). Charts use the middle, 1,350. If you meant 1,200–1,500 eggs in 10 days, that is about 120–150 a day and the plan changes completely.</li>
+          <li style="margin-bottom:6px"><b>Prices:</b> you buy at ₹8 and sell at ₹10 per egg.</li>
+          <li style="margin-bottom:6px"><b>Product:</b> ungraded, uncleaned BV380 brown eggs. No “360” brown line by Venkateshwara Hatcheries (the breeder) could be found. Check the chick-box label on the farm.</li>
+          <li><b>Place:</b> buying and selling in and around Bangalore.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>How to read this report</h3>
+        <ul style="margin:12px 0 0 18px;font-size:14px;color:var(--ink2)">
+          <li style="margin-bottom:6px"><b>“In plain words”</b> boxes explain a topic simply.</li>
+          <li style="margin-bottom:6px"><b>Black “Opportunity” boxes</b> show what changes if you do something different.</li>
+          <li style="margin-bottom:6px"><b>“Estimate”</b> means a modelled number. <b>“Published”</b> means a source states it.</li>
+          <li>Hover or tap any chart for the detail behind it. Words in the glossary are in section 2.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- 1 SUMMARY -->
+<section id="summary">
+  <div class="wrap">
+    <div class="head"><div class="num">01</div><h2>Five findings</h2>
+      <p>Everything else in this report supports these five points.</p></div>
+    <div class="grid3">
+      <div class="card"><div class="eyebrow">Finding 1</div><h3 style="margin:8px 0">₹2 isn’t enough</h3><p style="font-size:14px">Costs eat ₹0.45 an egg in breakage and packing. Labour, transport, rent and testing eat another ₹1.50–3.10. Run lean, you break even. Hire help, you lose about ₹64,000 a month.</p></div>
+      <div class="card"><div class="eyebrow">Finding 2</div><h3 style="margin:8px 0">You may overpay for eggs</h3><p style="font-size:14px">₹8 is ₹1 over today’s ₹7.00 wholesale reference. A fair brown premium is probably ₹0.50–0.75. That is an estimate. Get three quotes.</p></div>
+      <div class="card"><div class="eyebrow">Finding 3</div><h3 style="margin:8px 0">Stay with brown eggs</h3><p style="font-size:14px">Brown strains such as BV380 give the best margin you can actually supply every day. Real country eggs pay more per egg but only come in a few hundred a day.</p></div>
+      <div class="card"><div class="eyebrow">Finding 4</div><h3 style="margin:8px 0">Selling is about the buyer</h3><p style="font-size:14px">Distributors and restaurants pay about ₹8–9.50. Brands, shops and premium buyers can pay ₹10.50 and up for graded, clean, tested eggs.</p></div>
+      <div class="card"><div class="eyebrow">Finding 5</div><h3 style="margin:8px 0">Volume is the lever</h3><p style="font-size:14px">Overhead per egg falls from ₹3.12 at 1,350 a day to ₹2.13 at 3,000. At tuned prices (buy ₹7.60, sell ₹10.50) a hired-help business at 3,000 a day makes about ₹29,000 a month.</p></div>
+      <div class="card"><div class="eyebrow">Warning</div><h3 style="margin:8px 0">Don’t use “country”</h3><p style="font-size:14px">Authorities seize dyed and mislabelled eggs. Over 80,000 were seized in Moradabad in Nov 2025. Sell BV380 as “farm-fresh brown eggs”, nothing more.</p></div>
+    </div>
+
+    <div class="opp">
+      <div class="eyebrow">Opportunity</div>
+      <p>Put the five findings together and the business changes from “a trader at ₹2 a egg” into “a small aggregator with a premium-quality offer”.</p>
+      <ul>
+        <li>Today, running lean: about <b>₹2,000</b> a month.</li>
+        <li>With tuned buying and selling prices, still lean: about <b>₹38,000</b> a month.</li>
+        <li>Add a genuine country-egg line and a small boiled-egg pilot: about <b>₹50,000–65,000</b> a month. The pilot is unproven.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 2 BASICS -->
+<section id="basics">
+  <div class="wrap">
+    <div class="head"><div class="num">02</div><h2>Egg business basics</h2>
+      <p>Skip this section if you know the trade. If you are new, it explains every term used later.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>An egg business moves one product through five hands, and each hand takes a cut. You sit in the middle as a trader: you buy from farms, check quality, and sell to shops, brands and kitchens.</p></div>
+
+    <h3 style="margin-bottom:12px">How an egg gets from farm to plate</h3>
+    <div class="chain">
+      <div><div class="k">1 · Farm</div><h3>Hens lay</h3><p>A farm keeps thousands of hens. Eggs are collected daily. Typical farm cost is about ₹5–5.50 an egg, mostly feed.</p></div>
+      <div class="me"><div class="k">2 · You</div><h3>Trader</h3><p>Buy from several farms, check quality, collect and deliver. Buying ₹8, selling ₹10.</p></div>
+      <div><div class="k">3 · Brand or packer</div><h3>Grade and pack</h3><p>Sorts by size, cleans, puts in cartons, adds a brand and a label.</p></div>
+      <div><div class="k">4 · Shop or app</div><h3>Retail</h3><p>BigBasket, Zepto, supermarkets and kirana stores. They add a large margin.</p></div>
+      <div><div class="k">5 · Customer</div><h3>Pays shelf price</h3><p>About ₹10.80–25 an egg depending on the type of egg.</p></div>
+    </div>
+
+    <h3 style="margin:34px 0 12px">The four kinds of egg you will hear about</h3>
+    <div class="cmp">
+      <div><div class="eyebrow">White</div><div class="p">₹7–8</div><p>From white-feathered commercial hens. This is what the daily wholesale price covers. Cheapest and the biggest volume. Bakeries and hostels buy it.</p></div>
+      <div><div class="eyebrow">Brown (yours)</div><div class="p">₹10–13</div><p>From commercial brown hens such as BV380. Many buyers wrongly think brown means country. Priced a little above white at wholesale.</p></div>
+      <div><div class="eyebrow">Country / nati</div><div class="p">₹15–18</div><p>From backyard or village hens. Smaller eggs, far fewer per hen. Retail prices are 2–3 times white. A magnet for fakes.</p></div>
+      <div><div class="eyebrow">Premium</div><div class="p">₹16–30</div><p>Omega-3, cage-free, free-range, organic. Mostly produced by brands with their own farms, not by traders.</p></div>
+    </div>
+    <p class="cap">Ranges are retail prices per egg. Sources are app and store listings of various dates. Wholesale prices are lower.</p>
+
+    <h3 style="margin:34px 0 12px">Glossary</h3>
+    <dl class="gl">
+      <div><dt>NECC</dt><dd>National Egg Coordination Committee, a farmers’ body. It announces a suggested wholesale price per egg every day for each zone. It covers white eggs only. On 5 Nov 2026 Bengaluru was ₹7.00.</dd></div>
+      <div><dt>BV380</dt><dd>A brown-egg hen from Venkateshwara Hatcheries. It is a commercial hybrid, not a country bird.</dd></div>
+      <div><dt>Layer</dt><dd>A hen kept for eggs, not meat. A good commercial layer gives about 300 eggs a year.</dd></div>
+      <div><dt>Ungraded / graded</dt><dd>Ungraded eggs are mixed sizes. Graded eggs are sorted by weight, from small (38–44 g) to extra large (60 g and up).</dd></div>
+      <div><dt>Candling</dt><dd>Holding an egg to a bright light to spot cracks and defects. A cheap LED candler costs about ₹1,650.</dd></div>
+      <div><dt>Dry cleaning</dt><dd>Wiping dirt off the shell with a dry cloth or pad. Washing is avoided because it strips the shell’s natural coating and shortens shelf life.</dd></div>
+      <div><dt>FSSAI</dt><dd>The food safety regulator. Every food seller needs a registration or licence.</dd></div>
+      <div><dt>GST nil-rated</dt><dd>Fresh eggs carry no GST. Buyers may still ask for a GST number.</dd></div>
+      <div><dt>HoReCa</dt><dd>Hotels, restaurants and catering. They buy eggs in large quantities, mostly on price.</dd></div>
+      <div><dt>Quick commerce</dt><dd>Delivery apps such as Blinkit, Zepto and Swiggy Instamart. They sell brands, not loose eggs from traders.</dd></div>
+      <div><dt>White-label / private label</dt><dd>Eggs sold under the shop or app’s own name, made by someone else. Relish (Zepto) and Fresho (BigBasket) are examples.</dd></div>
+      <div><dt>Working capital</dt><dd>Money tied up in eggs you have paid for but not yet been paid for. It is the cash you must have on hand to keep trading.</dd></div>
+      <div><dt>Overhead</dt><dd>Costs you pay even if you sell one egg more or less: labour, rent, vehicle, lab tests, accounting.</dd></div>
+      <div><dt>Contribution / gross margin</dt><dd>Selling price minus the cost of the eggs and packing, before overhead.</dd></div>
+      <div><dt>Break-even</dt><dd>The volume or price at which profit is exactly zero.</dd></div>
+      <div><dt>Residue test</dt><dd>A lab test that checks eggs for banned antibiotics. Buyers now ask for it after a 2025 scare.</dd></div>
+      <div><dt>Hen-housed eggs</dt><dd>Eggs per hen counted from the day she is placed, including hens that die. The fair way to compare breeds.</dd></div>
+      <div><dt>AGMARK</dt><dd>A voluntary government grading and quality mark for eggs.</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- 3 PRICES -->
+<section id="price">
+  <div class="wrap">
+    <div class="head"><div class="num">03</div><h2>Prices: where ₹8 and ₹10 sit</h2>
+      <p>First, what the egg market actually pays, then where your ₹8 buying price and ₹10 selling price fall in it.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>There is one published daily egg price in India, and it is for white eggs. Brown eggs have no published price. They sell for “the white price plus a bit”, and that bit is agreed between buyer and seller. The “bit” is the thing to negotiate.</p></div>
+
+    <div class="card">
+      <h3>Bangalore wholesale price per egg, last 12 months</h3>
+      <div class="legend">
+        <span><i style="background:var(--ink);height:3px"></i>NECC Bengaluru (white eggs)</span>
+        <span><i style="background:var(--lite)"></i>Estimated brown range (NECC +₹0.50 to +₹1.50)</span>
+        <span><i style="border-top:2px dashed var(--ink);height:0"></i>Your ₹10 selling price</span>
+        <span><i style="border-top:2px solid var(--mid);height:0"></i>Your ₹8 buying price</span>
+      </div>
+      <div class="chart" id="c-necc"></div>
+      <p class="cap">Monthly points are the 1st of each month from price-tracking sites and are indicative. Only the 1–5 Nov figures are from the official NECC sheet. The brown premium is an estimate because nobody publishes a brown rate. Hover a month for numbers.</p>
+    </div>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>What the chart tells you</h3>
+        <ul style="margin:12px 0 0 18px;color:var(--ink2);font-size:14px">
+          <li style="margin-bottom:8px">Your ₹8 is above the brown range in most months of the year. It was within range only in the winter peak.</li>
+          <li style="margin-bottom:8px">Wholesale ranged ₹4.50–7.10 over the year, a swing of ₹2.60. A fixed ₹8 buying price ignores it.</li>
+          <li>In March 2026 the Karnataka price fell from about ₹7.06 to ₹4.60 in 15 days. At a fixed ₹8 you would have overpaid by more than ₹2 an egg.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>The year in four seasons</h3>
+        <table style="margin-top:8px">
+          <tr><td><b>Nov–Jan</b></td><td>Winter and weddings. Prices peak. We are here now.</td></tr>
+          <tr><td><b>Feb–Apr</b></td><td>Summer starts, Gulf exports halted in 2026. Prices crash.</td></tr>
+          <tr><td><b>May–Jul</b></td><td>Heat cuts output. Prices climb again.</td></tr>
+          <tr><td><b>Aug–Oct</b></td><td>Religious fasting months cut demand. Prices soft.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>Who pays what, per egg</h3>
+      <div class="legend">
+        <span><i style="background:var(--ink)"></i>What the trade pays or asks</span>
+        <span><i style="background:repeating-linear-gradient(45deg,var(--ink) 0 2px,transparent 2px 5px);border:1px solid var(--ink)"></i>What the shelf charges</span>
+        <span><i style="border-top:2px dashed var(--ink);height:0;width:22px"></i>₹10</span>
+      </div>
+      <div class="chart" id="c-ladder"></div>
+      <p class="cap">Retail figures are worked out from app listings of different dates, some up to two years old. Treat as a guide and check live. Hover a bar for detail.</p>
+    </div>
+
+    <div class="callout"><b>Reading the chart:</b> your ₹10 is above what distributors, restaurants, schools and anganwadis pay. It is below what shelves charge. The gap between ₹10 and the shelf price is where brands and shops make their money, and where you can move into.</div>
+
+    <div class="opp">
+      <div class="eyebrow">Opportunity</div>
+      <p>Because buyers don’t all pay the same, the buyer you pick matters as much as the egg you sell.</p>
+      <ul>
+        <li><b>Stay out of the cheap end.</b> Hostels and caterers buy white eggs at about ₹7. You cannot win there with ₹8 eggs.</li>
+        <li><b>Aim at the ₹10.50–12 range:</b> shops, bakeries and small brands that want graded, clean, traceable eggs. Energy Eggs in Hoskote sells brown wholesale at ₹12.</li>
+        <li><b>Price off the market.</b> Quote “NECC + ₹3” with ₹10 as the floor. In peak months you earn more; in low months you still earn.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 4 ECONOMICS -->
+<section id="econ">
+  <div class="wrap">
+    <div class="head"><div class="num">04</div><h2>Your numbers: buy ₹8, sell ₹10</h2>
+      <p>What one egg earns, what the month earns, and what it takes to make the business pay.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>You earn ₹2 on every egg, but that ₹2 has to pay for breakage, trays, the helper, transport, rent and lab tests. Add those up per egg and they are close to ₹2 already. The only way to make real money is to shrink those costs, widen the ₹2, or spread the costs over more eggs.</p></div>
+
+    <div class="card">
+      <h3>Where each egg’s ₹10 goes</h3>
+      <div class="legend">
+        <span><i style="background:var(--ink)"></i>Egg cost (₹8)</span>
+        <span><i style="background:var(--mid)"></i>Breakage</span>
+        <span><i style="background:var(--lite)"></i>Trays and packing</span>
+        <span><i style="background:repeating-linear-gradient(45deg,var(--ink) 0 2px,transparent 2px 5px);border:1px solid var(--ink)"></i>Overhead: labour, transport, rent, tests</span>
+      </div>
+      <div class="chart" id="c-unit"></div>
+      <p class="cap">At 1,350 eggs a day. “Lean” means the owner handles the eggs, with an ₹8,000 shed and one combined pickup-and-drop run a day. Overhead figures come from the earlier cost model and are estimates.</p>
+    </div>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>Profit per month at ₹8 → ₹10</h3>
+        <div class="chart" id="c-vol"></div>
+        <p class="cap">Profit before the owner’s own pay, interest and depreciation. Volume matters less than the setup: hired help loses about ₹63–65k whether you sell 1,200 or 1,500 a day.</p>
+      </div>
+      <div class="card">
+        <h3>Selling price needed to break even</h3>
+        <div class="chart" id="c-be"></div>
+        <p class="cap">Buying at ₹8. The line at ₹10 is what you charge today.</p>
+      </div>
+    </div>
+
+    <h3 style="margin:36px 0 12px">Try your own numbers</h3>
+    <div class="calc">
+      <div>
+        <div class="ctl"><label class="t">Eggs a day <span id="vV"></span></label><input id="iV" type="range" min="800" max="4000" step="50" value="1350"></div>
+        <div class="ctl"><label class="t">Buying price per egg <span id="vB"></span></label><input id="iB" type="range" min="5" max="9" step="0.05" value="8"></div>
+        <div class="ctl"><label class="t">Selling price per egg <span id="vS"></span></label><input id="iS" type="range" min="7" max="14" step="0.05" value="10"></div>
+        <div class="ctl"><label class="t">How you run it</label>
+          <div class="seg"><label><input type="radio" name="mode" value="lean"><span>Lean · owner-run</span></label><label><input type="radio" name="mode" value="hired" checked><span>With hired help</span></label></div>
+        </div>
+        <p class="cap">Breakage ₹0.25 and trays/packing ₹0.20 an egg are included. Overhead grows with volume. The owner’s pay is not included. Everything here is an estimate.</p>
+      </div>
+      <div class="out">
+        <div class="eyebrow">Profit per month</div>
+        <div class="big" id="oP">–</div>
+        <div class="row"><span>Profit per egg</span><span id="oE">–</span></div>
+        <div class="row"><span>Overhead per egg</span><span id="oO">–</span></div>
+        <div class="row"><span>Monthly sales</span><span id="oR">–</span></div>
+        <div class="row"><span>Selling price needed to break even</span><span id="oBP">–</span></div>
+        <div class="row"><span>Volume needed to break even at these prices</span><span id="oBE">–</span></div>
+        <div class="row"><span>Cash tied up (28 days of sales)</span><span id="oW">–</span></div>
+      </div>
+    </div>
+
+    <div class="opp">
+      <div class="eyebrow">Opportunity</div>
+      <p>Two cheap moves change the whole picture. Try them in the calculator.</p>
+      <ul>
+        <li><b>Buy at ₹7.50–7.75</b> instead of ₹8: +₹10,000 to +₹20,000 a month.</li>
+        <li><b>Sell graded, clean eggs at ₹10.50</b> instead of ₹10: +₹20,000 a month.</li>
+        <li>Together, still lean: about <b>₹38,000</b> a month. With hired help at this volume you still lose about ₹27,000.</li>
+        <li>At 3,000 eggs a day with hired help and those prices: about <b>+₹29,000</b> a month.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 5 BREEDS -->
+<section id="breed">
+  <div class="wrap">
+    <div class="head"><div class="num">05</div><h2>Which breed gives better numbers?</h2>
+      <p>You don’t keep hens, so “breed” here means which type of egg to buy and sell. The short answer: stay with brown, add a small genuine country line.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>A commercial hen is bred to lay almost an egg a day, for about 18 months. A country hen lays a third to half as many. Fewer eggs means each one costs the farm more, and supply is scattered across villages. That is why country eggs sell for two to three times as much, and why you can only get a few hundred a day.</p></div>
+
+    <div class="card">
+      <h3>Eggs per hen per year</h3>
+      <p style="font-size:13px;margin-top:6px">Bar shows the published range, up to 72 weeks of lay unless noted.</p>
+      <div class="chart" id="c-hen"></div>
+      <p class="cap">Sources: breeder guides for Lohmann, ISA, Hy-Line and Venkys (secondary copies), ICAR-DPR pamphlet, TNAU. Sources conflict for several country breeds, shown as wide ranges. Quail eggs weigh about 10–11 g, a fifth of a hen egg.</p>
+    </div>
+
+    <div class="card" style="margin-top:20px">
+      <h3>Margin per egg a trader can earn, by type of egg</h3>
+      <p style="font-size:13px;margin-top:6px">After breakage, trays and transport. Before labour, rent, tests and delivery. All estimates.</p>
+      <div class="chart" id="c-margin"></div>
+      <p class="cap">Hover a bar for what you pay, what you sell at, and how easy it is to get steady supply near Bangalore.</p>
+    </div>
+
+    <div class="tw" style="margin-top:20px"><table>
+      <tr><th>Type of egg</th><th>Buy (₹/egg)</th><th>Sell to businesses (₹/egg)</th><th>Margin on money tied up</th><th>Steady supply near Bangalore?</th><th>Verdict</th></tr>
+      <tr><td><b>BV380 or similar brown</b></td><td>₹8 (₹7–8 farm quotes)</td><td>₹10 (₹10.50–12 with grading/cartons)</td><td>18–21%</td><td>Good: Magadi, Doddaballapura, Hoskote, Ramanagara farms</td><td><span class="tag f">Main line</span></td></tr>
+      <tr><td><b>Hy-Line, Lohmann or ISA brown</b></td><td>₹8</td><td>₹10 (no extra for strain)</td><td>19–22%</td><td>Poor to fair: few farms keep them</td><td><span class="tag">Same as above</span></td></tr>
+      <tr><td><b>White (BV300 and others)</b></td><td>₹6.80–7.20</td><td>₹7.50–8.20 (₹8.50–9 to packs)</td><td>4–14%</td><td>Excellent</td><td><span class="tag">Volume only</span></td></tr>
+      <tr><td><b>Improved country</b> (Giriraja, Swarnadhara, Vanaraja, Kuroiler)</td><td>₹10–13</td><td>₹13–16</td><td>12–25%</td><td>Poor: no organised egg farms, only chicks are sold</td><td><span class="tag">Skip</span></td></tr>
+      <tr><td><b>True country / nati</b></td><td>₹12–15</td><td>₹16–22</td><td>15–35%</td><td>Very poor: a few hundred a day at most</td><td><span class="tag f">Side line</span></td></tr>
+      <tr><td><b>Kadaknath</b></td><td>₹20–25</td><td>₹25–35</td><td>15–30%</td><td>Very poor, niche, price claims unproven</td><td><span class="tag">Skip</span></td></tr>
+      <tr><td><b>Quail</b></td><td>₹2.50–3.50</td><td>₹4.50–5.50</td><td>40–60%</td><td>Fair, but tiny eggs and a niche market</td><td><span class="tag">Skip</span></td></tr>
+    </table></div>
+    <p class="cap">Figures for brown and white are from price listings and the research agent’s estimates. Wholesale prices for country, Kadaknath and quail eggs are estimates; there is no published series. “Margin on money tied up” is net margin divided by the buying price.</p>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>Why a farm can accept less than ₹8</h3>
+        <p style="font-size:14px;margin-top:10px">Feed is the biggest cost. A BV380 hen eats about 139 g of feed per egg, roughly ₹4.20–4.40 an egg at ₹30–32 a kg. Total cost on a white-egg farm in Namakkal was about ₹4.50–5.20 an egg in 2025–26 (published, two sources). A brown-egg farm costs a little more. At ₹8 the farm earns about ₹2.50 an egg. That is a lot, and it is the room you have to negotiate.</p>
+      </div>
+      <div class="card">
+        <h3>What it means for brown strains</h3>
+        <p style="font-size:14px;margin-top:10px">To a buyer, all brown eggs are the same. Nobody pays more for a BV380 egg than for a Hy-Line Brown or a Lohmann Brown egg. Imported strains lay slightly bigger eggs, which grade better. They matter only if you can find farms that keep them, which is hard near Bangalore.</p>
+      </div>
+    </div>
+
+    <div class="callout"><b>Fake country eggs.</b> Many “country” eggs listed at ₹6 are really commercial brown eggs. Coimbatore officials seized about 3,900 dyed eggs in 2020, and Moradabad over 80,000 in Nov 2025. If you add a country line, buy only from farms you have visited, and say so honestly on the label.</div>
+
+    <div class="opp">
+      <div class="eyebrow">Opportunity</div>
+      <p>What changing the type of egg is worth, at your volume.</p>
+      <ul>
+        <li><b>Stay brown for the main business.</b> It earns ₹1.40–1.70 per egg before overhead, about ₹1,700–2,500 a day. White earns only ₹360–1,500 a day.</li>
+        <li><b>Add 150–300 genuine country eggs a day.</b> Roughly +₹1–3 an egg, so +₹4,500 to +₹27,000 a month.</li>
+        <li><b>Chicks for country breeds</b> (Giriraja, Swarnadhara) come from Karnataka’s veterinary university (KVAFSU). You could pay a village farmer’s group to raise them for you, then buy their eggs. The university sells chicks, not eggs.</li>
+        <li><b>Add white eggs only as a volume line</b> for bakeries. It brings you customers but little profit.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 6 OPPORTUNITIES -->
+<section id="opps">
+  <div class="wrap">
+    <div class="head"><div class="num">06</div><h2>The opportunity map</h2>
+      <p>Every part of this business has a better version. Here is each one, what it is worth, and what it takes.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>Think of it as a menu. Some items are cheap and certain, like buying smarter. Others are bigger but riskier, like boiled eggs. The chart ranks them by how much they add each month.</p></div>
+
+    <div class="card">
+      <h3>What each move adds per month at 1,350 eggs a day</h3>
+      <div class="chart" id="c-lev"></div>
+      <p class="cap">Ranges are estimates. Dark bars are cost cuts or price changes under your control. Hatched bars depend on finding buyers and are unproven. These don’t all add up exactly, because some overlap.</p>
+    </div>
+
+    <h3 style="margin:34px 0 12px">Three stages of the business</h3>
+    <div class="card">
+      <div class="chart" id="c-stage"></div>
+      <p class="cap">All figures lean, at 1,350 eggs a day, before the owner’s pay. “Tuned” means buying at ₹7.60 and selling at a blended ₹10.50. The country line adds +₹13,500 at 225 eggs a day and +₹2 an egg. The boiled-egg pilot adds about +₹13,500 at 150 eggs a day and +₹3 an egg, and the demand is unproven.</p>
+    </div>
+
+    <h3 style="margin:34px 0 12px">Every aspect, today versus better</h3>
+    <div class="tw"><table>
+      <tr><th>Aspect</th><th>Today</th><th>Better option</th><th>Upside</th><th>Effort and risk</th></tr>
+      <tr><td><b>Buying price</b></td><td>₹8, probably fixed</td><td>NECC + ₹0.50–0.75, with a floor and a cap</td><td>₹0.25–0.50 an egg (₹10–20k a month)</td><td>Low effort. Needs 3 farm quotes and some negotiation.</td></tr>
+      <tr><td><b>Contract type</b></td><td>Fixed or unclear</td><td>NECC-linked weekly average. Or lock a fixed price for Feb–Apr now while farms are not worried.</td><td>Protects against a ₹2 crash</td><td>Low. Needs trust with each farm.</td></tr>
+      <tr><td><b>Source of eggs</b></td><td>Local farms</td><td>Same, on a daily round of 3–6 farms near Bangalore</td><td>Saves freight (₹0.95–1.20 an egg from Namakkal)</td><td>Don’t truck from Namakkal or Hospet: it costs more and the eggs are white.</td></tr>
+      <tr><td><b>Egg condition</b></td><td>Ungraded, uncleaned</td><td>Dry-cleaned and graded by weight</td><td>+₹0.30–0.80 an egg</td><td>Low cost: scale ₹2–5k, candler ₹1,650, a helper for an hour or two. Small eggs need a buyer.</td></tr>
+      <tr><td><b>Packaging</b></td><td>Loose trays</td><td>Branded 6, 10 or 12-egg cartons for shops</td><td>+₹0.50–1.50 an egg net</td><td>Medium: carton ₹0.30–1.10 an egg, label, packer registration, shop listings.</td></tr>
+      <tr><td><b>Traceability</b></td><td>None</td><td>Printed lot date, farm name, “residue tested”</td><td>+₹0.30–1 when combined with a brand claim</td><td>Printer ₹88,000. Needs lab reports to back any claim.</td></tr>
+      <tr><td><b>Buyer</b></td><td>Whoever buys</td><td>Bakeries, shops, small brands, premium cafés. Avoid hostels.</td><td>₹0.50–2 an egg</td><td>Needs effort to find and serve. Many small buyers.</td></tr>
+      <tr><td><b>Product type</b></td><td>Brown only</td><td>Add a genuine country line</td><td>+₹1–3 an egg on 150–300 a day</td><td>Medium: finding trusted village farmers. High fraud risk if sloppy.</td></tr>
+      <tr><td><b>Value-added</b></td><td>Raw eggs</td><td>Boiled and peeled eggs for offices, gyms and cafés</td><td>+₹2–4 an egg, unproven</td><td>High: licensed kitchen, cold chain, daily delivery. No Indian brand found.</td></tr>
+      <tr><td><b>Distribution</b></td><td>Your own eggs</td><td>Carry a premium brand’s eggs (omega-3, cage-free, ₹21–30 retail)</td><td>₹1.50–4 an egg on their price (about 10–15% cut)</td><td>Needs an agreement. You can’t make these eggs yourself.</td></tr>
+      <tr><td><b>Operations</b></td><td>Hired helper, hired vehicle</td><td>Owner-run, one combined pickup-and-drop round</td><td>Saves about ₹65,000 a month</td><td>Time-heavy for you. Fine until about 3,000 eggs a day.</td></tr>
+      <tr><td><b>Scale</b></td><td>1,350 a day</td><td>3,000 a day</td><td>Overhead per egg falls from ₹3.12 to ₹2.13</td><td>Needs more buyers and more farms. Working capital doubles.</td></tr>
+      <tr><td><b>Season</b></td><td>Same plan all year</td><td>Lock winter prices in September, spring prices in November</td><td>Avoids ₹1–2 swings</td><td>Low effort. Needs a written plan.</td></tr>
+    </table></div>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>Not worth chasing</h3>
+        <ul style="margin:12px 0 0 18px;font-size:14px;color:var(--ink2)">
+          <li style="margin-bottom:7px"><b>Liquid egg:</b> sells for ₹150–190 a kg, about ₹7.50–9.50 an egg. That is below your ₹8 cost, and the plant costs crores.</li>
+          <li style="margin-bottom:7px"><b>Egg powder:</b> about ₹6 an egg. SKM and Venky’s dominate it.</li>
+          <li style="margin-bottom:7px"><b>Quail eggs:</b> about ₹5–7 each, eggs a fifth of the size, tiny niche.</li>
+          <li style="margin-bottom:7px"><b>Kadaknath:</b> price claims range from ₹19 to ₹50 and are unproven. Easy to fake.</li>
+          <li><b>Switching to white at ₹10:</b> bakeries and hostels buy at ₹7–8.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Who pays extra for a better egg</h3>
+        <table style="margin-top:8px">
+          <tr><td><b>Gyms and meal brands</b></td><td>Want peeled boiled eggs. ₹10–16.</td></tr>
+          <tr><td><b>Office canteens</b></td><td>Boiled eggs ₹12–16. Need licensed supply.</td></tr>
+          <tr><td><b>Hotels (3–5 star)</b></td><td>Graded, clean, stamped. ₹8.50–11.</td></tr>
+          <tr><td><b>Hospitals</b></td><td>Residue-tested, dated eggs. ₹8–10.</td></tr>
+          <tr><td><b>Apartments and kiranas</b></td><td>Trusted country eggs. ₹15–18 retail.</td></tr>
+        </table>
+        <p class="cap">Volumes and prices here are estimates. No Bangalore data was published. Call 5–10 buyers in each group to check.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 BUYERS -->
+<section id="buyers">
+  <div class="wrap">
+    <div class="head"><div class="num">07</div><h2>Who to approach</h2>
+      <p>Start with buyers who pay fast, so cash comes in. Use test reports to win brands and BigBasket later. IndiaMART numbers are call-routing lines, not direct lines.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>Don’t start with the biggest names. Quick-commerce apps and big chains buy only from brands, graded and packed, and pay in 30–60 days. Start with smaller buyers who take your eggs as they are and pay in days. Then use what you earn to move up.</p></div>
+
+    <h3 style="margin-bottom:10px">Stage 1 · Week 1 · Cash buyers (they take ungraded eggs)</h3>
+    <div class="tw"><table>
+      <tr><th>Buyer</th><th>What they are</th><th>Likely price and pay</th><th>Contact</th><th>Fit</th></tr>
+      <tr><td><b>HMS Egg Distributors</b></td><td>Bengaluru wholesaler, 10,000+ eggs a day</td><td>NECC minus a margin · cash to 3 days</td><td>+91 79 4266 8236</td><td class="dots">●●●●●</td></tr>
+      <tr><td><b>GVR Traders</b></td><td>Hosur wholesaler, lists brown at ₹6.50</td><td>Cash to 3 days</td><td>+91 80 4764 0218</td><td class="dots">●●●●●</td></tr>
+      <tr><td><b>Ponmani Egg Mart</b></td><td>Hosur trader, brown and white</td><td>Cash</td><td>+91 80 4767 1107</td><td class="dots">●●●●<s>●</s></td></tr>
+      <tr><td><b>Akshaya Trading Co.</b></td><td>Kolar trader-wholesaler</td><td>Cash</td><td>+91 80 4754 8357</td><td class="dots">●●●●<s>●</s></td></tr>
+      <tr><td><b>Sunrise Group</b></td><td>Bengaluru wholesaler, lists brown</td><td>NECC minus · 0–7 days</td><td>+91 80 4753 2601</td><td class="dots">●●●●<s>●</s></td></tr>
+      <tr><td><b>Farm Delights</b></td><td>Bengaluru wholesaler, lists brown at ₹6</td><td>Cash</td><td>+91 80 4767 5705</td><td class="dots">●●●●<s>●</s></td></tr>
+      <tr><td><b>Brown Nest Eggs</b></td><td>Muthyalanagar trader, sells brown at ₹8 to restaurants and bakeries</td><td>Cash</td><td>IndiaMART enquiry</td><td class="dots">●●●●<s>●</s></td></tr>
+      <tr><td><b>Iyengar bakeries, Bun World</b></td><td>500+ independent bakeries in south Bengaluru</td><td>Cash, daily or weekly</td><td>Walk in. Bun World 080 2346 2288 (older number)</td><td class="dots">●●●●<s>●</s></td></tr>
+    </table></div>
+
+    <h3 style="margin:34px 0 10px">Stage 2 · Week 2 · Brands and mid-sized buyers</h3>
+    <div class="tw"><table>
+      <tr><th>Buyer</th><th>Why they fit</th><th>Contact</th><th>Fit</th></tr>
+      <tr><td><b>Best Buy Eggs</b><br><span style="font-size:12px;color:var(--muted)">Sri Venkateshwara Egg Trader</span></td><td>A Bangalore trader-brand already selling brown eggs on BigBasket. Retail ₹10–13 an egg, so margin is thin.</td><td>No. 26 72/1, Andra Colony, A Narayanapura, K R Puram, Bengaluru 560016. Visit in person.</td><td class="dots">●●●●<s>●</s></td></tr>
+      <tr><td><b>Egg Bucket</b><br><span style="font-size:12px;color:var(--muted)">Kacklewalls Nutrition Pvt Ltd</span></td><td>A Bangalore egg-delivery startup of the right size.</td><td>No public contact. Find the founders on LinkedIn.</td><td class="dots">●●●●<s>●</s></td></tr>
+      <tr><td><b>Energy Eggs Pvt Ltd</b></td><td>Hoskote aggregator selling brown wholesale at ₹12, minimum 3,000. A possible buyer or co-packer, and a competitor.</td><td>TradeIndia listing · CIN U46303KA2023PTC175532</td><td class="dots">●●●<s>●●</s></td></tr>
+      <tr><td><b>Happy Hens</b></td><td>Bangalore, about 20,000 eggs a day, B2B cage-free. Reportedly uses BV380 (one earlier source says Hy-Line). Built for farmers, not traders.</td><td>eggs@thehappyhensfarm.com · +91 95358 04444 · WhatsApp +91 63608 04449</td><td class="dots">●●●<s>●●</s></td></tr>
+    </table></div>
+
+    <h3 style="margin:34px 0 10px">Stage 3 · Month 2 · Platforms and retail (need graded, packed, tested eggs)</h3>
+    <div class="tw"><table>
+      <tr><th>Buyer</th><th>Route</th><th>Contact</th><th>Fit</th></tr>
+      <tr><td><b>BigBasket Fresho</b></td><td>Bangalore-based; sources from named farms. Login bigbasket.com/partner/login (“FSD Supplier” or “Speciality Supplier”). Needs residue reports.</td><td>business@bigbasket.com · Innovative Retail Concepts, K R Puram</td><td class="dots">●●●<s>●●</s></td></tr>
+      <tr><td><b>Zomato Hyperpure</b></td><td>Lists “unsorted” eggs. Seller hub seller.hyperpure.com (another source found no public sign-up; try it, then call).</td><td>help@hyperpure.com · 011-41171717</td><td class="dots">●●●<s>●●</s></td></tr>
+      <tr><td><b>SPAR Hypermarket</b></td><td>Local buying team. Ask for the fresh or eggs buyer.</td><td>Bannerghatta Road, +91 80 4181 1600</td><td class="dots">●●●<s>●●</s></td></tr>
+      <tr><td><b>Namdhari’s Fresh</b></td><td>Relationship-led. Visit a store and ask for the category buyer.</td><td>Bidadi +91 80486 12612 (IndiaMART, unverified)</td><td class="dots">●●●<s>●●</s></td></tr>
+      <tr><td><b>Nature’s Basket (Spencer’s)</b></td><td>Supplier form at spencers.in/partner-with-us; a representative calls back if you fit.</td><td>customercare@spencers.in · 1800-103-0134</td><td class="dots">●●<s>●●●</s></td></tr>
+      <tr><td><b>Zepto Relish · Swiggy Noice · Licious</b></td><td>Own labels, run through contract manufacturers who grade, clean and pack. Reach them through a licensed packer, or read the “manufactured by” line on one pack.</td><td>brands.zepto.co.in · partner.instamart.in</td><td class="dots">●●<s>●●●</s></td></tr>
+    </table></div>
+
+    <div class="grid2" style="margin-top:28px">
+      <div class="card">
+        <h3>Skip for now</h3>
+        <ul style="margin:12px 0 0 18px;font-size:14px;color:var(--ink2)">
+          <li style="margin-bottom:7px"><b>Own farms or integrated farmers:</b> Suguna, Venky’s, OVO, Farm Made, Abhi, Akshayakalpa, Henfruit, Keggs.</li>
+          <li style="margin-bottom:7px"><b>Eggoz:</b> buys from large farmers on its own feed rules. A trader’s lot is unlikely to qualify.</li>
+          <li style="margin-bottom:7px"><b>Slow payers (30–60 days):</b> Theobroma, Rebel Foods, Sodexo, Compass, Curefoods.</li>
+          <li style="margin-bottom:7px"><b>Closed or shrinking:</b> Otipy closed in May 2025 without paying vendors. WayCool has had layoffs.</li>
+          <li><b>Blinkit:</b> no private label; it buys only from brands and distributors.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Government buyers</h3>
+        <p style="font-size:14px;margin-top:10px">There is no central tender. Anganwadis pay about ₹6 an egg and schools about ₹6.50, often late, and below market (₹7–7.90 in Sept 2026). Low fit, but a possible foothold in a taluk with no wholesaler.</p>
+      </div>
+    </div>
+
+    <h3 style="margin:34px 0 10px">Where to find farms and chicks</h3>
+    <div class="tw"><table>
+      <tr><th>Source</th><th>What they offer</th><th>Contact (published)</th></tr>
+      <tr><td><b>Sri Krishna Poultry, Magadi</b></td><td>BV380 brown eggs, asks ₹8</td><td>IndiaMART listing</td></tr>
+      <tr><td><b>Arfa Poultry, Hoskote</b></td><td>Brown eggs, asks ₹8</td><td>IndiaMART listing</td></tr>
+      <tr><td><b>Krishnajaya Farm, Ramanagara</b></td><td>Brown eggs, asks ₹7</td><td>IndiaMART listing</td></tr>
+      <tr><td><b>MRM Farms · Namma Karnataka Country Farm, Doddaballapura</b></td><td>Brown eggs, asks ₹10 and ₹6</td><td>IndiaMART listing</td></tr>
+      <tr><td><b>Kanasu Poultry Farm</b></td><td>Aseel eggs, asks ₹15</td><td>IndiaMART listing</td></tr>
+      <tr><td><b>Venkateshwara Hatcheries (BV380)</b></td><td>Chick and breed information</td><td>response@venkys.com</td></tr>
+      <tr><td><b>KVAFSU poultry unit, Hebbal, Bengaluru</b></td><td>Giriraja and Swarnadhara chicks, advice on country birds</td><td>Dr Naveen Kumar G.S. +91 98453 76538 · geneticsnaveen@kvafsu.edu.in · aicrppoultrykvafsu@gmail.com</td></tr>
+      <tr><td><b>ICAR-DPR, Hyderabad</b></td><td>Vanaraja, Gramapriya, Srinidhi, Aseel, Kadaknath chicks</td><td>dprhatchery@gmail.com · 040-24018687</td></tr>
+    </table></div>
+    <p class="cap">All farm prices are asking prices, not sales. Verify by visiting. Don’t pay advance to any farm you haven’t seen.</p>
+
+    <div class="callout"><b>Scam warning.</b> Nobody can fast-track a listing on Blinkit, BigBasket or Zepto for a fee. Blinkit’s CEO and BigBasket have both warned about this, and a trader lost about ₹25 lakh to a fake “dark store franchise”. Avoid sites selling paid onboarding (for example thegstco.com). Do not use scm.ril.com for retail supply.</div>
+
+    <h3 style="margin:34px 0 10px">Brand FSSAI numbers found</h3>
+    <div class="tw"><table>
+      <tr><th>Brand</th><th>Company</th><th>FSSAI</th></tr>
+      <tr><td>Fresho</td><td>Innovative Retail Concepts Pvt Ltd</td><td><b>10020043003172</b></td></tr>
+      <tr><td>Eggoz</td><td>Nupa Technologies Pvt Ltd, Gurgaon</td><td><b>10821005000022</b></td></tr>
+      <tr><td>OVO Farm</td><td>OVO Farm Pvt Ltd, Odisha</td><td><b>10017032000304</b></td></tr>
+      <tr><td>Keggs</td><td>Keggfarms Pvt Ltd</td><td><b>10013011001060</b></td></tr>
+      <tr><td>Henfruit</td><td>Tanuj Roshi farm, Haryana</td><td><b>10814001000505</b></td></tr>
+      <tr><td>Sam’s Fresh</td><td>Sams’ Trade, Raipur</td><td><b>20521079002052</b></td></tr>
+      <tr><td>Abhi Eggs</td><td>Abhi Foods, Hyderabad</td><td>Two numbers appear (10120004000258, 10015063000664). Check the pack.</td></tr>
+    </table></div>
+    <p class="cap">Numbers on Swiggy Instamart pages belong to the dark-store seller, not the brand, so they are left out. Best Buy, Relish, Egg Master, Suguna and Licious show no brand number. Some came from search copies of BigBasket pages, which can be stale. Check each on foscos.fssai.gov.in. No procurement-person names or emails were found for any brand, and none were guessed.</p>
+
+    <div class="opp">
+      <div class="eyebrow">Opportunity</div>
+      <p>Your best sales route is one that moves up as your eggs get better.</p>
+      <ul>
+        <li><b>Week 1:</b> wholesalers and bakeries buy as-is, so cash starts flowing.</li>
+        <li><b>Month 2:</b> with graded eggs and a test report, approach brands such as Best Buy and Energy Eggs.</li>
+        <li><b>Month 4+:</b> with a track record, approach BigBasket and Hyperpure.</li>
+        <li>The lab report is your key. Almost no small supplier can show one, and every brand now asks.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 8 RULES -->
+<section id="rules">
+  <div class="wrap">
+    <div class="head"><div class="num">08</div><h2>Rules, labels and documents</h2>
+      <p>What you must have, what you may say on a label, and what buyers ask for first.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>The law lets you sell eggs with a basic registration. It is strict about what you say on the label: every claim must be true and provable. “Country” and “free-range” have no legal definition, so you need proof. Only “organic” needs a certificate.</p></div>
+
+    <div class="tw"><table>
+      <tr><th>If you say or do this</th><th>The rule</th><th>What you need</th></tr>
+      <tr><td><b>Trade eggs at ₹55 lakh a year</b></td><td>Since 1 April 2026, FSSAI Basic Registration covers turnover up to ₹1.5 crore. A State licence is needed from ₹1.5 crore to ₹50 crore. Licences no longer need renewing.</td><td>Basic Registration (₹100 a year). Some buyers may ask for a State licence (₹2,000 a year). Confirm the category on foscos.fssai.gov.in.</td></tr>
+      <tr><td><b>Pack or boil eggs for others</b></td><td>Repacking for someone else’s label, or boiling and peeling, counts as manufacturing and may need more than Basic Registration.</td><td>A manufacturing category on FoSCoS. Confirm before starting.</td></tr>
+      <tr><td><b>Say “country”, “nati” or “desi”</b></td><td>No FSSAI definition. Selling commercial-layer eggs as country eggs is misbranding.</td><td>Proof of source: backyard or indigenous birds, farm records. Never on BV380.</td></tr>
+      <tr><td><b>Say “free-range” or “cage-free”</b></td><td>No Indian definition. A 2017 proposal for certification was never notified (no evidence found).</td><td>A voluntary audit, such as Certified Humane, backs the claim.</td></tr>
+      <tr><td><b>Say “organic”</b></td><td>The only claim that legally needs certification (NPOP or PGS-India).</td><td>Farm certified. PGS ₹500–2,000 for groups. NPOP about ₹15,000–50,000 a year for a small farm. Takes 1–3 years.</td></tr>
+      <tr><td><b>Say “omega-3”</b></td><td>Nutrient claims must be proven. No egg-specific limit was found.</td><td>NABL lab nutrient test.</td></tr>
+      <tr><td><b>Say “antibiotic residue free”</b></td><td>Nitrofurans are banned. The limit for unavoidable traces is 1 µg/kg.</td><td>Regular NABL lab residue reports.</td></tr>
+      <tr><td><b>Say “vegetarian-fed”</b></td><td>Must be provable. Eggs must still carry the brown “non-veg” symbol.</td><td>Feed records.</td></tr>
+      <tr><td><b>Sell in cartons</b></td><td>Legal Metrology rules: packer name and address, count of eggs, packing month and year, MRP, consumer-care details.</td><td>Packer registration in Karnataka and a compliant label.</td></tr>
+    </table></div>
+    <p class="cap">Fines under the research: misbranding up to ₹3 lakh, misleading advertising up to ₹10 lakh. These penalty figures are from background knowledge, not re-verified. Fresh eggs in shell are GST-exempt, but processed formats may differ, so check with an accountant.</p>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>Egg size grades (AGMARK)</h3>
+        <p style="font-size:13px;margin-top:6px">Voluntary for the domestic market.</p>
+        <table style="margin-top:8px">
+          <tr><td><b>Extra large</b></td><td>60 g and above</td></tr>
+          <tr><td><b>Large</b></td><td>53–59 g</td></tr>
+          <tr><td><b>Medium</b></td><td>45–52 g (one source says 46–52)</td></tr>
+          <tr><td><b>Small</b></td><td>38–44 g</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>The December 2025 scare</h3>
+        <p style="font-size:14px;margin-top:10px">A viral test reported a banned antibiotic trace (AOZ, 0.73 µg/kg) in Eggoz eggs. FSSAI ordered nationwide sampling, with more than 150 Karnataka samples, then on about 20 December called the cancer claims misleading. No final results were published. Buyers now ask suppliers for residue reports.</p>
+      </div>
+    </div>
+
+    <h3 style="margin:34px 0 14px">What buyers ask for first</h3>
+    <div class="grid2">
+      <div>
+        <h3 style="font-size:12px;color:var(--muted)">Legal and onboarding</h3>
+        <div class="prog" style="margin-top:10px"><span id="p1t">0 / 0</span><div class="bar2"><span id="p1b" style="width:0"></span></div></div>
+        <ul class="chk" data-group="legal">
+          <li><input type="checkbox"><span><b>FSSAI registration</b> as a trader. Some buyers want a State licence.</span></li>
+          <li><input type="checkbox"><span><b>GSTIN.</b> Not legally needed for eggs, but nearly every buyer asks. File nil returns.</span></li>
+          <li><input type="checkbox"><span><b>PAN</b> and a current bank account with a cancelled cheque.</span></li>
+          <li><input type="checkbox"><span><b>Udyam (MSME) registration.</b> Free.</span></li>
+          <li><input type="checkbox"><span><b>Shop and establishment or trade licence</b> (₹500–3,000) and address proof.</span></li>
+          <li><input type="checkbox"><span><b>Signed vendor form and supplier code of conduct</b> when a buyer sends them.</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:12px;color:var(--muted)">Quality and proof</h3>
+        <div class="prog" style="margin-top:10px"><span id="p2t">0 / 0</span><div class="bar2"><span id="p2b" style="width:0"></span></div></div>
+        <ul class="chk" data-group="quality">
+          <li><input type="checkbox"><span><b>Residue report per farm</b> from an NABL lab: nitrofuran metabolites (AOZ, AMOZ, AHD, SEM) and chloramphenicol, plus Salmonella. About ₹8,850 a sample at government rates.</span></li>
+          <li><input type="checkbox"><span><b>Farm list:</b> names, places, flock sizes, breed, flock age, vaccination and vet records.</span></li>
+          <li><input type="checkbox"><span><b>Signed “no banned antibiotics” declaration</b> from each farm, with feed details.</span></li>
+          <li><input type="checkbox"><span><b>QC sheet:</b> weight grade, crack limit, days since laying, shell cleanliness, candling check.</span></li>
+          <li><input type="checkbox"><span><b>Traceability record</b> linking each lot to its farm and laying date.</span></li>
+          <li><input type="checkbox"><span><b>Dry-cleaning method</b> written down.</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:20px">
+      <div>
+        <h3 style="font-size:12px;color:var(--muted)">Commercial terms</h3>
+        <div class="prog" style="margin-top:10px"><span id="p3t">0 / 0</span><div class="bar2"><span id="p3b" style="width:0"></span></div></div>
+        <ul class="chk" data-group="commercial">
+          <li><input type="checkbox"><span><b>Price sheet by size grade</b>, ex-farm and delivered.</span></li>
+          <li><input type="checkbox"><span><b>Committed weekly capacity</b> and a backup plan: 3–5 farms in your pool.</span></li>
+          <li><input type="checkbox"><span><b>Packing:</b> 30-egg trays or crates, lot number and laying date on the label.</span></li>
+          <li><input type="checkbox"><span><b>Delivery:</b> days, time slots, a closed vehicle kept cool.</span></li>
+          <li><input type="checkbox"><span><b>Breakage and returns policy</b> and the credit period you accept.</span></li>
+          <li><input type="checkbox"><span><b>Sample lot:</b> 5–10 trays, then a 2–4 week trial order.</span></li>
+        </ul>
+      </div>
+      <div class="card" style="align-self:start">
+        <h3>What to say on the label</h3>
+        <p style="font-size:14px;margin-top:10px"><b>Safe:</b> “Farm-fresh brown eggs. Traceable. Residue-tested. Delivered within 48 hours of laying.” Say “residue-tested” only once you hold a lab report.</p>
+        <p style="font-size:14px;margin-top:10px"><b>Not safe:</b> country, desi, nati, free-range, organic, omega-3 or any other claim you cannot prove for BV380 eggs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 MONEY -->
+<section id="money">
+  <div class="wrap">
+    <div class="head"><div class="num">09</div><h2>Capital and funding</h2>
+      <p>How much cash you need before the first egg sells, and where to get it.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>Most of the cash you need isn’t for equipment. It’s for the gap between paying farms (often the same day or week) and being paid by buyers (days to weeks). The longer buyers take to pay, the more cash you need.</p></div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Start-up money at 1,350 eggs a day (₹ lakh)</h3>
+        <div class="legend">
+          <span><i style="background:var(--ink)"></i>Set-up</span>
+          <span><i style="background:var(--mid)"></i>Working capital</span>
+          <span><i style="background:var(--lite)"></i>One month of buffer</span>
+        </div>
+        <div class="chart" id="c-cap"></div>
+        <p class="cap">Estimates. Working capital is about 28 days of sales plus a few days of eggs bought. It falls if buyers pay in days.</p>
+      </div>
+      <div class="card">
+        <h3>What the set-up money buys</h3>
+        <table style="margin-top:8px">
+          <tr><td><b>LED candler and dark booth</b></td><td>₹7–12k</td></tr>
+          <tr><td><b>Digital scale</b></td><td>₹2–5k</td></tr>
+          <tr><td><b>Cleaning pads, racks, tables, crates</b></td><td>₹20–40k</td></tr>
+          <tr><td><b>Egg-stamping printer (optional)</b></td><td>₹88k</td></tr>
+          <tr><td><b>Shed deposit (6–10 months)</b></td><td>₹60–90k</td></tr>
+          <tr><td><b>Licences and registrations</b></td><td>₹10–15k</td></tr>
+          <tr><td><b>First lab tests (2–3 farms)</b></td><td>₹18–27k</td></tr>
+          <tr><td><b>Cold room (optional)</b></td><td>₹40k–3.5 L</td></tr>
+        </table>
+        <p class="cap">The ₹4.3–6 lakh grader isn’t worth it below 8–10k eggs a day.</p>
+      </div>
+    </div>
+
+    <h3 style="margin:34px 0 12px">Funding</h3>
+    <div class="tw"><table>
+      <tr><th>Scheme</th><th>Fit</th><th>Notes</th></tr>
+      <tr><td><b>PM Mudra</b></td><td><span class="tag f">Best</span></td><td>Collateral-free. Kishore to ₹5 L, Tarun to ₹10 L. Covers working capital and a vehicle.</td></tr>
+      <tr><td><b>CGTMSE-backed bank overdraft</b></td><td><span class="tag">Good</span></td><td>A receivables-backed overdraft suits buyers who pay in 30–45 days.</td></tr>
+      <tr><td>Agriculture Infrastructure Fund</td><td><span class="tag">Maybe</span></td><td>3% interest help on loans to ₹2 crore, covers cold storage. Whether egg trading qualifies is unconfirmed.</td></tr>
+      <tr><td>PMEGP</td><td><span class="tag">Weak</span></td><td>Poultry and animal husbandry are excluded. Check with your District Industries Centre.</td></tr>
+      <tr><td>AHIDF · NABARD · NLM · Pashu Bhagya</td><td><span class="tag">No</span></td><td>For processing, farms or farmers only. AHIDF may have closed in March 2026.</td></tr>
+      <tr><td>Karnataka egg co-op or farmer company</td><td><span class="tag">None found</span></td><td>No ready model exists. A trader could be the buyer for a farmer group.</td></tr>
+    </table></div>
+
+    <div class="opp">
+      <div class="eyebrow">Opportunity</div>
+      <ul>
+        <li><b>Ask buyers for faster payment.</b> Halving the credit period halves the cash you must find. Wholesalers and bakeries pay in 0–7 days.</li>
+        <li><b>Negotiate with farms too.</b> Ask for 7–15 days’ credit from an established supplier, and 10–25 paise off for taking all of a farm’s eggs.</li>
+        <li><b>Take a Mudra loan of ₹6–10 lakh</b> before onboarding any platform that pays in 30+ days.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 10 OPERATIONS -->
+<section id="ops">
+  <div class="wrap">
+    <div class="head"><div class="num">10</div><h2>Running it day to day</h2>
+      <p>Where to buy, how to move eggs, how long they last, and when to lock prices.</p></div>
+
+    <div class="plain"><div class="eyebrow">In plain words</div><p>Eggs are fragile and perishable. They keep about a week in a hot Bangalore summer and ten days in winter, at room temperature. So you buy close, move fast, and don’t stockpile.</p></div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Buy from nearby, not far</h3>
+        <p style="font-size:14px;margin-top:10px">Trucking eggs from Namakkal or Hospet costs ₹0.95–1.20 an egg in freight with a hired small truck. The price gap to Bangalore is only ₹0.50–0.60. Those zones also supply mostly white eggs. Better: a daily 60–120 km round of 3–6 farms in Kolar, Chikkaballapur, Hosur, Tumakuru and Ramanagara.</p>
+        <table style="margin-top:12px">
+          <tr><th>Source</th><th>Landed cost per egg</th></tr>
+          <tr><td>Namakkal, own hired truck</td><td>about ₹7.65</td></tr>
+          <tr><td>Namakkal, part-load on an egg lorry</td><td>₹6.80–6.95</td></tr>
+          <tr><td>Hospet, own hired truck</td><td>about ₹7.80</td></tr>
+          <tr><td>Local farm (milk-run)</td><td>NECC ₹7.00 + premium</td></tr>
+        </table>
+        <p class="cap">White-egg prices on 5 Nov 2026. Freight is an estimate.</p>
+      </div>
+      <div class="card">
+        <h3>Storage and breakage</h3>
+        <table>
+          <tr><td><b>Room temperature</b></td><td>About 7 days in summer, about 10 in winter. Sources say 7–12.</td></tr>
+          <tr><td><b>Refrigerated</b></td><td>Much longer (30–45 days in one source), but never chill and then sell at room temperature. Condensation spoils eggs.</td></tr>
+          <tr><td><b>Breakage in transport</b></td><td>Field estimate 0.5–2%. Lab tests show 4.6% in good boxes up to 12–16% in plastic crates with foam trays.</td></tr>
+          <tr><td><b>Best packing</b></td><td>Pulp trays in corrugated boxes.</td></tr>
+          <tr><td><b>Stock rule</b></td><td>Oldest laying date out first. A date code on every tray.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h3 style="margin:34px 0 12px">Buying contracts: from simple to protective</h3>
+    <div class="tw"><table>
+      <tr><th>Type</th><th>How it works</th><th>Good for</th><th>Risk</th></tr>
+      <tr><td><b>NECC-linked</b></td><td>That day’s Bengaluru NECC plus ₹0.50–0.75</td><td>Fair to both. Automatic.</td><td>Price jumps daily</td></tr>
+      <tr><td><b>Weekly average</b></td><td>Average of that week’s NECC plus the premium</td><td>Smooths the jumps</td><td>Slight lag</td></tr>
+      <tr><td><b>Floor and cap</b></td><td>NECC + premium, never below ₹6 and never above ₹8</td><td>Protects the farm in a crash and you in a spike</td><td>Needs trust</td></tr>
+      <tr><td><b>Fixed for a quarter</b></td><td>E.g. ₹7.50 flat for Feb–Apr. Sign in winter for spring.</td><td>Protects against known low seasons</td><td>One side loses if NECC moves far</td></tr>
+      <tr><td><b>Quality-adjusted</b></td><td>Premium only for eggs of 55 g and up, under 1% cracks</td><td>Rewards good farms</td><td>Needs weighing and candling</td></tr>
+    </table></div>
+    <p class="cap">These are illustrative structures. No standard template is published. Have a lawyer or accountant check any written contract.</p>
+
+    <div class="grid2" style="margin-top:20px">
+      <div class="card">
+        <h3>Checking a farm before you buy</h3>
+        <ul style="margin:12px 0 0 18px;font-size:14px;color:var(--ink2)">
+          <li style="margin-bottom:7px"><b>Flock age.</b> 20–24 weeks: small eggs. 28–55 weeks: best. 60+ weeks: big, pale, thin-shelled. Ask the chick placement date.</li>
+          <li style="margin-bottom:7px"><b>Medicine log.</b> Don’t buy during treatment or the withdrawal period.</li>
+          <li style="margin-bottom:7px"><b>Feed.</b> Own-mixed or branded? Is calcium added?</li>
+          <li style="margin-bottom:7px"><b>Size.</b> Weigh a sample of 30 eggs per lot.</li>
+          <li style="margin-bottom:7px"><b>Shell.</b> Candle 30 eggs and record cracks and colour.</li>
+          <li><b>Cost:</b> ₹3,000–7,000 for scale and candler, plus 1–3 paise an egg for lab tests (estimates).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Buying plan by season</h3>
+        <table>
+          <tr><td><b>Nov–Jan</b></td><td>Prices are rising about 10 paise a day. Use a cap. Lock a fixed price for Feb–Apr now.</td></tr>
+          <tr><td><b>Feb–Apr</b></td><td>Push the premium to ₹0.40–0.60 in return for steady offtake. Recruit new farms. Shelf life is 7 days.</td></tr>
+          <tr><td><b>May–Jul</b></td><td>Heat cuts output. Keep stock to 2–4 days. Hold spring commitments.</td></tr>
+          <tr><td><b>Aug–Oct</b></td><td>Renegotiate. Agree winter price ranges before NECC rises.</td></tr>
+        </table>
+        <p class="cap">Bird flu cases in Karnataka (including near Bengaluru in April 2026) can pause demand for weeks.</p>
+      </div>
+    </div>
+
+    <div class="opp">
+      <div class="eyebrow">Opportunity</div>
+      <ul>
+        <li><b>Your own vehicle</b> beats hiring at about 20 or more trips a month (about ₹35–45k a month all-in). At 5,000 eggs a day it adds about ₹50,000 a month.</li>
+        <li><b>A small hub</b> with sorting and grading pays only above about 5,000 eggs a day.</li>
+        <li><b>Cold room:</b> optional for now.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 11 PLAN -->
+<section id="plan">
+  <div class="wrap">
+    <div class="head"><div class="num">11</div><h2>The next 30 days</h2></div>
+    <div class="steps">
+      <div class="step"><div class="wk">Days 1–5</div><h3>Set up</h3><ul>
+        <li>Get three farm quotes as “NECC + ₹x”</li><li>Apply for FSSAI, GST and Udyam</li><li>Send 2–3 farms’ eggs for residue tests</li><li>Weigh 30 eggs from each farm</li></ul></div>
+      <div class="step"><div class="wk">Days 5–10</div><h3>Price and call</h3><ul>
+        <li>Call the five cash buyers</li><li>Quote NECC + ₹3 with a ₹10 floor</li><li>Buy one Best Buy and one Fresho pack and read the label lines</li><li>Start dry-cleaning and grading by hand</li></ul></div>
+      <div class="step"><div class="wk">Days 10–20</div><h3>First deliveries</h3><ul>
+        <li>Supply trays to cash buyers</li><li>Visit Best Buy at K R Puram</li><li>Email Happy Hens and Energy Eggs</li><li>Hand-deliver sample trays to bakeries</li></ul></div>
+      <div class="step"><div class="wk">Days 20–30</div><h3>Decide</h3><ul>
+        <li>Turn samples into trial orders</li><li>Use real breakage and payment data to set grade prices</li><li>Visit one country-egg farm and test a 150-egg line</li><li>Decide: scale toward 3,000 a day, or rethink</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 RISKS -->
+<section id="risks">
+  <div class="wrap">
+    <div class="head"><div class="num">12</div><h2>Risks and open questions</h2></div>
+    <div class="grid2">
+      <div>
+        <details open><summary>Price swings</summary><p>A fixed ₹8 buying price against a market that moves ₹2.60 a year can erase your margin in a crash. Link the price to NECC.</p></details>
+        <details open><summary>Cash tied up</summary><p>Platforms, brands and chains pay in 15–60 days. One report put Zepto’s payments owed to merchants and suppliers at about ₹3,725 crore as of March 2026.</p></details>
+        <details open><summary>Residue compliance</summary><p>After the December 2025 scare, buyers ask for lab reports. Nitrofurans are banned in poultry. Don’t buy from a farm that won’t show its medicine log.</p></details>
+        <details open><summary>Fake or mislabelled eggs</summary><p>Authorities seize dyed and mislabelled eggs. Never label BV380 as country. If you add a country line, buy only from farms you’ve visited.</p></details>
+        <details open><summary>Small volume</summary><p>1,350 eggs a day is too small for Eggoz, Suguna and the national chains. It fits traders, bakeries and mid-sized brands.</p></details>
+      </div>
+      <div>
+        <details open><summary>Unverified or conflicting</summary><ul>
+          <li>The brown farm-gate premium has no published figure. It’s an estimate.</li>
+          <li>Buyer payment days aren’t published. Quick commerce is reported at roughly 7–60 days.</li>
+          <li>Hyperpure: one source found a seller portal, another found no public sign-up.</li>
+          <li>Whether Happy Hens uses BV380 or Hy-Line.</li>
+          <li>Egg counts per hen for several country breeds conflict between sources.</li>
+          <li>“BV 360”: no such Venkys line found. Check the farm’s chick-box label.</li>
+          <li>Whether repacking for another label needs more than Basic Registration.</li>
+          <li>The penalty figures and the old ₹12 lakh licence limit appear in some sources. The newer ₹1.5 crore limit is used here.</li>
+          <li>Procurement names and emails for big brands weren’t found.</li>
+          <li>Retail snapshots range from current to about two years old.</li>
+        </ul></details>
+        <details open><summary>Not covered</summary><ul>
+          <li>Blinkit, BB Now, Flipkart Minutes, Country Delight and Pluckk brand listings.</li>
+          <li>Gyms and fitness-meal providers.</li>
+          <li>A “Rasoi” caterer in Bangalore. Send a website or locality to add it.</li>
+          <li>Venkys’ own BV380 performance sheet. The download was blocked.</li>
+        </ul></details>
+        <details open><summary>Quick checks that would sharpen this report</summary><ul>
+          <li>Three same-day quotes for brown and white, same grade.</li>
+          <li>Your real transport cost per trip and whether ₹8 includes delivery.</li>
+          <li>Whether your ₹8 is fixed or moves with NECC.</li>
+          <li>Whether KVAFSU knows of any country-egg farmer groups near Bangalore.</li>
+        </ul></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h3>Sources</h3>
+    <div class="src" style="margin-top:12px">
+      <a href="https://www.e2necc.com/home/eggprice">e2necc.com: official NECC daily rate</a>
+      <a href="https://www.poultrymall.com/egg-rates/bengaluru">poultrymall.com: Bengaluru NECC history</a>
+      <a href="https://curlytales.com/why-egg-prices-in-karnataka-dropped-from-to-in-just-days">Curly Tales: Karnataka price crash, March 2026</a>
+      <a href="https://finshots.in/archive/understanding-the-economics-behind-indias-egg-prices-namakkal-tamil-nadu-egg-export-necc/">Finshots: egg economics</a>
+      <a href="https://www.dtnext.in/news/tamilnadu/egg-procurement-price-rises-to-480-paise-in-namakkal">DT Next: trader discount to NECC</a>
+      <a href="https://www.onmanorama.com/news/kerala/2026/07/14/poultry-farming-success-kerala.html">Onmanorama: BV380 farm economics</a>
+      <a href="https://www.hyline.com/filesimages/Hy-Line-Products/Hy-Line-Product-PDFs/Brown/BRN%20STD%20ENG.pdf">Hy-Line Brown performance standards</a>
+      <a href="https://lohmann-breeders.com/strains/lohmann-lsl-classic-cage-housing">Lohmann LSL-Classic</a>
+      <a href="https://pdonpoultry.org/wp-content/uploads/2024/10/2-Pamphlet-on-Varieties-Eng.pdf">ICAR-DPR: poultry varieties and prices</a>
+      <a href="https://kvafsu.edu.in/notification/AICRP_ON_POULTRY.pdf">KVAFSU: poultry research unit</a>
+      <a href="https://www.pashudhanpraharee.com/wp-content/uploads/2023/09/Commercial-Layer-Management-Guide-BV380_compressed.pdf">BV380 management guide</a>
+      <a href="https://www.mondaq.com/india/food-and-drugs-law/1801924/fssai-raises-turnover-limits-for-food-business-registration-and-licensing">Mondaq: FSSAI turnover limits from April 2026</a>
+      <a href="https://thesouthfirst.com/health/why-is-fssai-testing-eggoz-eggs-for-cancer-linked-antibiotics/">South First: FSSAI egg testing</a>
+      <a href="https://www.business-standard.com/health/eggs-safe-for-consumption-cancer-risk-claims-unfounded-clarifies-fssai-125122000486_1.html">Business Standard: FSSAI clarification</a>
+      <a href="https://www.freepressjournal.in/india/up-food-safety-department-busts-racket-selling-artificially-coloured-eggs-as-desi-in-moradabad">Free Press Journal: dyed “desi” eggs seized</a>
+      <a href="https://www.dtnext.in/tamilnadu/2020/02/02/3900-fake-country-chicken-eggs-seized">DT Next: fake country eggs seized</a>
+      <a href="https://agronfoodprocessing.com/?p=32150">Agro &amp; Food Processing: premium egg market</a>
+      <a href="https://www.organicmandya.com/know-your-food/dairy/country-vs-farm-vs-broiler-eggs/">Organic Mandya: country vs farm eggs</a>
+      <a href="https://www.pashudhanpraharee.com/wp-content/uploads/2023/09/TABLE-EGGS-GRADING-AND-MARKING-RULES.pdf">AGMARK table egg grading rules</a>
+      <a href="https://newskarnataka.com/mangaluru/anganwadi-workers-in-dk-bear-egg-costs-amid-payment-delays/20092026/">News Karnataka: anganwadi egg rate</a>
+      <a href="https://www.hyperpure.com/in/chicken-eggs">Hyperpure: egg prices</a>
+      <a href="https://dir.indiamart.com/bengaluru/egg.html">IndiaMART: Bengaluru egg sellers</a>
+      <a href="https://dir.indiamart.com/bengaluru/brown-eggs.html">IndiaMART: Bengaluru brown egg sellers</a>
+      <a href="https://mpeda.gov.in/wp-content/uploads/2025/03/REVISED_TESTING_FEE_14March2025.pdf">MPEDA: residue testing fees</a>
+      <a href="https://thehappyhensfarm.com/pages/happy-farmers">Happy Hens: farmer program</a>
+    </div>
+    <p style="margin-top:24px">Compiled on 5 Nov 2026 from public web sources by research agents. Figures marked as estimates are modelling assumptions, not published data. This is not legal or tax advice. Confirm licences with FoSCoS and a chartered accountant, and re-check live prices and contacts before acting.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg", tip=document.getElementById("tip");
+  function showTip(h,e){tip.innerHTML=h;tip.style.opacity=1;moveTip(e)}
+  function moveTip(e){var x=e.clientX+14,y=e.clientY+14,w=tip.offsetWidth,h=tip.offsetHeight;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;tip.style.left=x+"px";tip.style.top=y+"px"}
+  function hideTip(){tip.style.opacity=0}
+  function S(t,a,p,x){var n=document.createElementNS(NS,t);for(var k in a)n.setAttribute(k,a[k]);if(x!=null)n.textContent=x;if(p)p.appendChild(n);return n}
+  function svg(id,w,h){var host=document.getElementById(id);host.innerHTML="";return S("svg",{viewBox:"0 0 "+w+" "+h,role:"img"},host)}
+  function inr(n){return "₹"+n.toFixed(2)}
+  function hover(n,h){n.addEventListener("pointerenter",function(e){showTip(h,e)});n.addEventListener("pointermove",moveTip);n.addEventListener("pointerleave",hideTip)}
+  var pid=0;
+  function hatch(s){var id="h"+(pid++),d=S("defs",{},s),p=S("pattern",{id:id,width:6,height:6,patternUnits:"userSpaceOnUse",patternTransform:"rotate(45)"},d);
+    S("rect",{width:6,height:6,fill:"#ffffff"},p);S("line",{x1:0,y1:0,x2:0,y2:6,stroke:"#0a0a0a","stroke-width":2.2},p);return "url(#"+id+")"}
+  function k(n){return (n<0?"−":"+")+"₹"+Math.abs(n).toFixed(1)+"k"}
+
+  /* cost model (estimates, from the earlier cost research) */
+  function fixedHired(v){var a,b;if(v<=3000){a=[1500,132.4];b=[3000,191.9]}else{a=[3000,191.9];b=[5000,302.8]}
+    return Math.max(40,a[1]+(b[1]-a[1])*(v-a[0])/(b[0]-a[0]))*1000}
+  function fixedLean(v){return Math.max(30000,fixedHired(v)-65300)}
+  function fixedOf(v,m){return m==="lean"?fixedLean(v):fixedHired(v)}
+  function profit(v,buy,sell,m){return (sell-buy-.45)*v*30-fixedOf(v,m)}
+
+  /* NECC line */
+  (function(){
+    var W=760,H=320,m={l:44,r:18,t:16,b:34},mo=["Nov 25","Dec","Jan 26","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","5 Nov"],
+        v=[5.95,6.75,7.05,5.75,5.30,4.50,5.80,6.20,7.10,6.50,5.70,5.85,7.00],s=svg("c-necc",W,H),x0=m.l,x1=W-m.r,y0=H-m.b,y1=m.t,lo=4,hi=10.6;
+    function X(i){return x0+(x1-x0)*i/(v.length-1)}function Y(a){return y0-(y0-y1)*(a-lo)/(hi-lo)}
+    for(var g=4;g<=10;g++){S("line",{x1:x0,x2:x1,y1:Y(g),y2:Y(g),"class":"grid"},s);S("text",{x:x0-8,y:Y(g)+4,"text-anchor":"end"},s,"₹"+g)}
+    var up=v.map(function(a,i){return X(i)+","+Y(a+1.5)}),dn=v.map(function(a,i){return X(i)+","+Y(a+.5)}).reverse();
+    S("polygon",{points:up.concat(dn).join(" "),fill:"#d0d0d0",opacity:.8},s);
+    S("line",{x1:x0,x2:x1,y1:Y(10),y2:Y(10),stroke:"#0a0a0a","stroke-width":2,"stroke-dasharray":"7 5"},s);
+    S("text",{x:x1,y:Y(10)-8,"text-anchor":"end","class":"lab"},s,"₹10 YOU SELL");
+    S("line",{x1:x0,x2:x1,y1:Y(8),y2:Y(8),stroke:"#9a9a9a","stroke-width":2},s);
+    S("text",{x:x0+6,y:Y(8)-8,"class":"lab"},s,"₹8 YOU BUY");
+    S("polyline",{points:v.map(function(a,i){return X(i)+","+Y(a)}).join(" "),fill:"none",stroke:"#0a0a0a","stroke-width":3,"stroke-linejoin":"round"},s);
+    mo.forEach(function(n,i){S("text",{x:X(i),y:H-10,"text-anchor":"middle"},s,n)});
+    S("circle",{cx:X(5),cy:Y(4.5),r:5,fill:"#0a0a0a",stroke:"#fff","stroke-width":2},s);S("text",{x:X(5),y:Y(4.5)+20,"text-anchor":"middle","class":"lab"},s,"₹4.50 low");
+    S("circle",{cx:X(12),cy:Y(7),r:5,fill:"#0a0a0a",stroke:"#fff","stroke-width":2},s);S("text",{x:X(12)-4,y:Y(7)+22,"text-anchor":"end","class":"lab"},s,"₹7.00 today");
+    var cur=S("line",{y1:y1,y2:y0,stroke:"#0a0a0a","stroke-width":1,opacity:0},s),hit=S("rect",{x:x0,y:y1,width:x1-x0,height:y0-y1,fill:"transparent"},s);
+    hit.addEventListener("pointermove",function(e){var r=s.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*W,i=Math.max(0,Math.min(v.length-1,Math.round((px-x0)/(x1-x0)*(v.length-1))));
+      cur.setAttribute("x1",X(i));cur.setAttribute("x2",X(i));cur.setAttribute("opacity",.5);
+      showTip("<b>"+mo[i]+"</b><br>NECC (white) "+inr(v[i])+"<br>Est. brown "+inr(v[i]+.5)+" to "+inr(v[i]+1.5)+"<br>Your ₹8 vs that range: "+(8>v[i]+1.5?"above it":8<v[i]+.5?"below it":"inside it"),e)});
+    hit.addEventListener("pointerleave",function(){cur.setAttribute("opacity",0);hideTip()});
+  })();
+
+  /* range bars helper */
+  function rangeBars(id,rows,o){
+    var W=760,rh=o.rh||30,gh=34,top=8,H=top,labW=o.labW||240,x0=labW,x1=W-40,lo=o.lo,hi=o.hi;
+    rows.forEach(function(r){H+=r.g?gh:rh});H+=34;
+    var s=svg(id,W,H),hp=hatch(s);function X(v){return x0+(x1-x0)*(v-lo)/(hi-lo)}
+    var step=o.step||2;for(var g=lo;g<=hi;g+=step){S("line",{x1:X(g),x2:X(g),y1:top,y2:H-30,"class":"grid"},s);S("text",{x:X(g),y:H-12,"text-anchor":"middle"},s,(o.pre||"")+g+(o.suf||""))}
+    var y=top;
+    rows.forEach(function(r){
+      if(r.g){S("text",{x:0,y:y+24,"class":"lab",style:"font-size:10px;letter-spacing:.14em"},s,r.g);y+=gh;return}
+      var cy=y+rh/2;S("text",{x:labW-12,y:cy+4,"text-anchor":"end","class":"lab",style:"font-weight:500;fill:#3a3a3a"},s,r.n);
+      var fill=r.t?hp:"#0a0a0a",pt=r.hi-r.lo<0.01;
+      if(pt)S("circle",{cx:X(r.lo),cy:cy,r:7,fill:fill,stroke:"#0a0a0a","stroke-width":r.t?1.5:0},s);
+      else S("rect",{x:X(r.lo),y:cy-8,width:Math.max(X(r.hi)-X(r.lo),3),height:16,fill:fill,stroke:"#0a0a0a","stroke-width":r.t?1.5:0},s);
+      var lab=r.lab||(pt?(o.pre||"")+r.lo+(o.suf||""):(o.pre||"")+r.lo+"–"+r.hi+(o.suf||""));
+      S("text",{x:X(r.hi)+(pt?12:8),y:cy+4,"class":"lab"},s,lab);
+      var hit=S("rect",{x:0,y:y,width:W,height:rh,fill:"transparent"},s);hover(hit,"<b>"+r.n+"</b><br>"+lab+(o.unit?" "+o.unit:"")+"<br><span style='opacity:.8'>"+r.d+"</span>");y+=rh});
+    if(o.line!=null){S("line",{x1:X(o.line),x2:X(o.line),y1:top,y2:H-30,stroke:"#0a0a0a","stroke-width":2,"stroke-dasharray":"7 5"},s);S("text",{x:X(o.line)+6,y:top+10,"class":"lab"},s,o.lineLab||"")}
+  }
+
+  rangeBars("c-ladder",[
+    {g:"WHAT THE TRADE PAYS OR ASKS"},
+    {n:"Anganwadi rate (state)",lo:6,hi:6,t:0,d:"Fixed ₹6 an egg. Market was ₹7–7.90 in Sept 2026."},
+    {n:"Mid-day-meal schools",lo:6.5,hi:6.5,t:0,d:"About ₹6.50. Headmasters buy locally."},
+    {n:"IndiaMART brown asks, Bangalore area",lo:5.65,hi:8,t:0,d:"Seller asking prices."},
+    {n:"NECC Bengaluru, 1–5 Nov",lo:6.55,hi:7,t:0,d:"Official wholesale rate, white-egg basis."},
+    {n:"Hyperpure resale to restaurants",lo:6.33,hi:7.2,t:0,d:"₹190–216 per 30-egg tray."},
+    {n:"Est. restaurant / distributor, brown",lo:8,hi:9.5,t:0,d:"NECC plus ₹1–2. Estimate."},
+    {n:"Your buying price",lo:8,hi:8,t:0,d:"What you pay farms today."},
+    {n:"Energy Eggs wholesale brown",lo:12,hi:12,t:0,d:"₹12 an egg, minimum 3,000. Graded and packed."},
+    {n:"Est. genuine country, wholesale",lo:12,hi:15,t:0,d:"Estimate. No published series."},
+    {g:"WHAT THE SHELF CHARGES"},
+    {n:"Zepto “Fresh Brown” (6)",lo:10.8,hi:10.8,t:1,d:"₹65 for 6."},
+    {n:"BigBasket Best Buy brown",lo:10.2,hi:13.3,t:1,d:"₹80 per 6 and ₹122 per 12."},
+    {n:"Relish brown (Zepto label)",lo:11.5,hi:13,t:1,d:"₹69–78 for 6."},
+    {n:"Eggoz brown",lo:10.5,hi:14.8,t:1,d:"₹63–89 for 6 on BigBasket."},
+    {n:"Country / nati eggs",lo:15,hi:18,t:1,d:"BigBasket ₹15.8, Organic Mandya ₹18, Oneindia ₹16."},
+    {n:"Happy Hens free range / omega-3",lo:16,hi:25,t:1,d:"₹98–150 for 6 depending on the day."},
+    {n:"Farm Made free range",lo:22,hi:25,t:1,d:"₹132–151 for 6."},
+    {n:"Kadaknath",lo:19,hi:30,t:1,d:"BigBasket ₹19; IndiaMART asks up to ₹50 (unreliable)."}
+  ],{lo:4,hi:30,step:2,pre:"₹",line:10,lineLab:"₹10",unit:"an egg",labW:250});
+
+  /* per-egg unit chart */
+  (function(){
+    var v=1350,hF=fixedHired(v)/(v*30),lF=fixedLean(v)/(v*30),W=760,H=230,x0=170,x1=W-30,mx=12.5;
+    var s=svg("c-unit",W,H),hp=hatch(s);function X(a){return x0+(x1-x0)*a/mx}
+    for(var g=0;g<=12;g+=2){S("line",{x1:X(g),x2:X(g),y1:10,y2:H-40,"class":"grid"},s);S("text",{x:X(g),y:H-22,"text-anchor":"middle"},s,"₹"+g)}
+    var bars=[["Run lean (owner-run)",lF],["With hired help",hF]];
+    bars.forEach(function(b,i){var y=24+i*84,x=0,seg=[[8,"#0a0a0a","Egg cost"],[.25,"#9a9a9a","Breakage"],[.2,"#d0d0d0","Trays and packing"],[b[1],hp,"Overhead (labour, transport, rent, tests)"]],tot=0;
+      S("text",{x:0,y:y+22,"class":"lab"},s,b[0]);
+      seg.forEach(function(sg){var w=X(sg[0])-X(0);var r=S("rect",{x:X(0)+X(tot)-X(0),y:y,width:Math.max(w-1,1),height:34,fill:sg[1],stroke:sg[1]===hp?"#0a0a0a":"none","stroke-width":1.2},s);
+        hover(r,"<b>"+sg[2]+"</b><br>"+inr(sg[0])+" an egg");tot+=sg[0]});
+      var res=10-tot;S("text",{x:X(tot)+8,y:y+14,"class":"lab"},s,"Costs "+inr(tot));
+      S("text",{x:X(tot)+8,y:y+30,"class":"lab",style:"font-size:12px"},s,res>=0?"Profit "+inr(res)+" an egg":"Loss "+inr(-res)+" an egg")});
+    S("line",{x1:X(10),x2:X(10),y1:6,y2:H-40,stroke:"#0a0a0a","stroke-width":2,"stroke-dasharray":"7 5"},s);S("text",{x:X(10)-6,y:12,"text-anchor":"end","class":"lab"},s,"₹10 YOU SELL");
+  })();
+
+  /* profit by volume */
+  (function(){
+    var vols=[1200,1350,1500],W=520,rh=40,top=10,rows=[];
+    vols.forEach(function(v){rows.push([v+"/day · hired help",profit(v,8,10,"hired"),0]);rows.push([v+"/day · lean",profit(v,8,10,"lean"),1])});
+    var H=top+rh*rows.length+34,x0=14,x1=W-14,mn=-85,mx=30,s=svg("c-vol",W,H),hp=hatch(s);function X(a){return x0+(x1-x0)*(a-mn)/(mx-mn)}
+    [-80,-60,-40,-20,0,20].forEach(function(g){S("line",{x1:X(g*1000/1000),x2:X(g),y1:top,y2:H-28,"class":g?"grid":"ax",style:g?"":"stroke:#0a0a0a;stroke-width:1.5"},s);S("text",{x:X(g),y:H-10,"text-anchor":"middle"},s,(g<0?"−":g>0?"+":"")+"₹"+Math.abs(g)+"k")});
+    rows.forEach(function(r,i){var y=top+i*rh,val=r[1]/1000,a=Math.min(X(0),X(val)),w=Math.max(Math.abs(X(val)-X(0)),2);
+      S("text",{x:x0,y:y+12,"class":"lab",style:"font-weight:600"},s,r[0]);
+      S("rect",{x:a,y:y+17,width:w,height:14,fill:val<0?hp:"#0a0a0a",stroke:"#0a0a0a","stroke-width":val<0?1.5:0},s);
+      S("text",{x:val<0?a-8:a+w+8,y:y+29,"text-anchor":val<0?"end":"start","class":"lab"},s,k(val));
+      var hit=S("rect",{x:0,y:y,width:W,height:rh,fill:"transparent"},s);hover(hit,"<b>"+r[0]+"</b><br>"+k(val)+" a month<br>Per egg: "+(val<0?"−":"+")+"₹"+Math.abs(r[1]/(parseInt(r[0])*30)).toFixed(2))});
+  })();
+
+  /* break-even selling price */
+  (function(){
+    var rows=[],W=520,rh=44,top=10;
+    [["1,200/day · hired",1200,"hired"],["1,350/day · hired",1350,"hired"],["1,500/day · hired",1500,"hired"],["3,000/day · hired",3000,"hired"],["1,350/day · lean",1350,"lean"]].forEach(function(a){rows.push([a[0],8+.45+fixedOf(a[1],a[2])/(a[1]*30)])});
+    var H=top+rh*rows.length+34,x0=14,x1=W-14,lo=8,hi=12.5,s=svg("c-be",W,H);function X(a){return x0+(x1-x0)*(a-lo)/(hi-lo)}
+    for(var g=8;g<=12;g++){S("line",{x1:X(g),x2:X(g),y1:top,y2:H-28,"class":"grid"},s);S("text",{x:X(g),y:H-10,"text-anchor":"middle"},s,"₹"+g)}
+    rows.forEach(function(r,i){var y=top+i*rh;S("text",{x:x0,y:y+12,"class":"lab",style:"font-weight:600"},s,r[0]);
+      S("rect",{x:X(lo),y:y+18,width:X(r[1])-X(lo),height:14,fill:r[1]<=10.05?"#0a0a0a":"#9a9a9a"},s);S("text",{x:X(r[1])+8,y:y+30,"class":"lab"},s,inr(r[1]));
+      hover(S("rect",{x:0,y:y,width:W,height:rh,fill:"transparent"},s),"<b>"+r[0]+"</b><br>Break-even selling price "+inr(r[1])+"<br>Today you sell at ₹10.00")});
+    S("line",{x1:X(10),x2:X(10),y1:top,y2:H-28,stroke:"#0a0a0a","stroke-width":2,"stroke-dasharray":"7 5"},s);S("text",{x:X(10)+6,y:top+8,"class":"lab"},s,"₹10");
+  })();
+
+  /* eggs per hen */
+  rangeBars("c-hen",[
+    {g:"COMMERCIAL BROWN"},
+    {n:"BV380",lo:300,hi:330,t:0,d:"Secondary sources. Kerala farm says up to 300."},
+    {n:"Lohmann Brown",lo:321,hi:321,t:0,d:"To 72 weeks. Breeder guide."},
+    {n:"ISA Brown",lo:313,hi:313,t:0,d:"To 72 weeks. 351 to 80 weeks."},
+    {g:"COMMERCIAL WHITE"},
+    {n:"BV300",lo:320,hi:330,t:0,d:"Sources conflict (320+ or 330+)."},
+    {n:"Hy-Line W-36 / Lohmann LSL",lo:329,hi:336,t:0,d:"To 72–80 weeks."},
+    {g:"COUNTRY-TYPE (IMPROVED)"},
+    {n:"Swarnadhara (KVAFSU)",lo:180,hi:190,t:1,d:"Secondary source."},
+    {n:"Giriraja (KVAFSU)",lo:130,hi:150,t:1,d:"Secondary source. Some say 180–190, likely Swarnadhara."},
+    {n:"Gramapriya / Srinidhi / Vanaraja",lo:100,hi:180,t:1,d:"Backyard conditions. Sources conflict."},
+    {n:"Kuroiler",lo:140,hi:200,t:1,d:"Secondary source."},
+    {g:"TRUE DESI"},
+    {n:"Kadaknath",lo:105,hi:170,t:1,d:"Sources conflict, 105 vs 150–170."},
+    {n:"Aseel",lo:60,hi:92,t:1,d:"DPR says 60–70."},
+    {n:"Nati koli (local desi)",lo:40,hi:80,t:1,d:"Estimate."},
+    {g:"QUAIL (EGGS ARE A FIFTH THE SIZE)"},
+    {n:"Japanese quail",lo:250,hi:300,t:1,d:"TNAU. Eggs weigh 10–11 g."}
+  ],{lo:0,hi:360,step:60,unit:"eggs per hen per year",labW:240});
+
+  /* margin per egg by type */
+  rangeBars("c-margin",[
+    {n:"White commercial",lo:.3,hi:1.0,t:0,d:"Buy ₹6.80–7.20, sell ₹7.50–9. Excellent supply, low margin."},
+    {n:"BV380 brown (your line)",lo:1.4,hi:1.7,t:0,d:"Buy ₹8, sell ₹10. Good supply near Bangalore."},
+    {n:"Hy-Line / Lohmann / ISA brown",lo:1.5,hi:1.8,t:0,d:"Same price as BV380 but few farms keep them."},
+    {n:"Improved country birds",lo:1.5,hi:3,t:1,d:"Buy ₹10–13, sell ₹13–16. No organised egg farms."},
+    {n:"True country / nati",lo:2,hi:5,t:1,d:"Buy ₹12–15, sell ₹16–22. A few hundred a day at most. Fake risk."},
+    {n:"Kadaknath",lo:3,hi:8,t:1,d:"Buy ₹20–25, sell ₹25–35. Price claims unproven."},
+    {n:"Quail",lo:1.2,hi:1.8,t:1,d:"Tiny eggs. Niche."}
+  ],{lo:0,hi:9,step:1,pre:"₹",unit:"an egg",labW:250,line:1.55,lineLab:"your costs ≈ ₹1.55"});
+
+  /* opportunity levers */
+  (function(){
+    var rows=[
+      ["Run lean instead of hiring help",65,65,0,"Owner handles the eggs, ₹8k shed, one combined round. Saves about ₹65k. Time-heavy."],
+      ["Sell graded, clean eggs ₹0.50–1 higher",20.25,40.5,0,"+₹0.50 to +₹1 on all 40,500 eggs a month."],
+      ["Buy at NECC +₹0.50–0.75 (₹7.50–7.75)",10.1,20.25,0,"Saves ₹0.25–0.50 an egg."],
+      ["Genuine country line, 150–300 a day",4.5,27,1,"+₹1 to +₹3 an egg. Supply scattered. Fraud risk."],
+      ["Boiled-and-peeled pilot, 100–300 a day",6,36,1,"+₹2 to +₹4 an egg. Demand unproven. Needs a licensed kitchen."],
+      ["Carry a premium brand’s eggs",3,18,1,"About 10–15% distributor cut on ₹15–30 eggs. Needs an agreement."]
+    ];
+    var W=760,rh=44,top=8,H=top+rh*rows.length+36,x0=300,x1=W-60,mx=70,s=svg("c-lev",W,H),hp=hatch(s);function X(a){return x0+(x1-x0)*a/mx}
+    for(var g=0;g<=70;g+=10){S("line",{x1:X(g),x2:X(g),y1:top,y2:H-30,"class":"grid"},s);S("text",{x:X(g),y:H-12,"text-anchor":"middle"},s,"₹"+g+"k")}
+    rows.forEach(function(r,i){var y=top+i*rh,cy=y+rh/2,pt=r[1]===r[2];
+      S("text",{x:x0-12,y:cy+4,"text-anchor":"end","class":"lab",style:"font-weight:500;fill:#3a3a3a"},s,r[0]);
+      if(pt)S("rect",{x:X(0),y:cy-8,width:X(r[1])-X(0),height:16,fill:"#0a0a0a"},s);
+      else{S("rect",{x:X(0),y:cy-8,width:X(r[1])-X(0),height:16,fill:r[3]?hp:"#0a0a0a",opacity:.35,stroke:"#0a0a0a","stroke-width":r[3]?1:0},s);
+        S("rect",{x:X(r[1]),y:cy-8,width:X(r[2])-X(r[1]),height:16,fill:r[3]?hp:"#0a0a0a",stroke:"#0a0a0a","stroke-width":r[3]?1.5:0},s)}
+      S("text",{x:X(r[2])+8,y:cy+4,"class":"lab"},s,pt?"₹"+r[1]+"k":"₹"+r[1]+"–"+r[2]+"k");
+      hover(S("rect",{x:0,y:y,width:W,height:rh,fill:"transparent"},s),"<b>"+r[0]+"</b><br>₹"+r[1]+"k to ₹"+r[2]+"k a month<br><span style='opacity:.8'>"+r[4]+"</span>")});
+  })();
+
+  /* three stages */
+  (function(){
+    var v=1350,t=profit(v,8,10,"hired")/1000,l=profit(v,8,10,"lean")/1000,tuned=profit(v,7.6,10.5,"lean")/1000;
+    var rows=[["Today, with hired help",t,"At ₹8 → ₹10, hired help."],["Today, run lean",l,"At ₹8 → ₹10, owner-run."],["Tuned, lean",tuned,"Buy ₹7.60, sell a blended ₹10.50, owner-run."],["Tuned + country line",tuned+13.5,"Adds 225 genuine country eggs a day at +₹2."],["Tuned + country + peeled-egg pilot",tuned+27,"Adds a 150-a-day boiled-egg pilot at +₹3. Unproven."]];
+    var W=760,rh=46,top=10,H=top+rh*rows.length+34,x0=250,x1=W-70,mn=-80,mx=80,s=svg("c-stage",W,H),hp=hatch(s);function X(a){return x0+(x1-x0)*(a-mn)/(mx-mn)}
+    [-80,-40,0,40,80].forEach(function(g){S("line",{x1:X(g),x2:X(g),y1:top,y2:H-28,"class":g?"grid":"ax",style:g?"":"stroke:#0a0a0a;stroke-width:1.5"},s);S("text",{x:X(g),y:H-10,"text-anchor":"middle"},s,(g<0?"−":g>0?"+":"")+"₹"+Math.abs(g)+"k")});
+    rows.forEach(function(r,i){var y=top+i*rh,cy=y+rh/2,a=Math.min(X(0),X(r[1])),w=Math.max(Math.abs(X(r[1])-X(0)),2);
+      S("text",{x:x0-30-130+130,y:cy+4,"text-anchor":"end","class":"lab",style:"font-weight:500;fill:#3a3a3a"},s,r[0]);
+      S("rect",{x:a,y:cy-9,width:w,height:18,fill:r[1]<0?hp:(i>=3?"#6b6b6b":"#0a0a0a"),stroke:"#0a0a0a","stroke-width":r[1]<0?1.5:0},s);
+      S("text",{x:r[1]<0?a-8:a+w+8,y:cy+4,"text-anchor":r[1]<0?"end":"start","class":"lab"},s,k(r[1]));
+      hover(S("rect",{x:0,y:y,width:W,height:rh,fill:"transparent"},s),"<b>"+r[0]+"</b><br>"+k(r[1])+" a month<br><span style='opacity:.8'>"+r[2]+"</span>")});
+  })();
+
+  /* capital stacked */
+  (function(){
+    var v=1350,rev=v*30*10,wc=(rev*28/30+v*8*5)/100000,d=[["At 1,350 eggs a day",2.0,wc,1.2,"Set-up ₹1.5–2.5 L · working capital about ₹"+wc.toFixed(1)+" L · buffer ₹1.2 L"]];
+    d.push(["At 3,000 eggs a day",5.0,10.5,1.9,"Set-up ₹4–6 L · working capital ₹10–11 L · buffer ₹1.9 L"]);
+    var W=520,rh=70,top=8,H=top+rh*d.length+30,x0=14,x1=W-14,mx=22,s=svg("c-cap",W,H);function X(a){return x0+(x1-x0)*a/mx}
+    for(var g=0;g<=20;g+=5){S("line",{x1:X(g),x2:X(g),y1:top,y2:H-26,"class":"grid"},s);S("text",{x:X(g),y:H-8,"text-anchor":"middle"},s,"₹"+g+" L")}
+    var cols=["#0a0a0a","#9a9a9a","#d0d0d0"];
+    d.forEach(function(r,i){var y=top+i*rh,x=X(0),tot=r[1]+r[2]+r[3];S("text",{x:x0,y:y+15,"class":"lab"},s,r[0]);
+      [1,2,3].forEach(function(q){var w=X(r[q])-X(0);S("rect",{x:x,y:y+24,width:Math.max(w-2,0),height:26,fill:cols[q-1]},s);x+=w});
+      S("text",{x:x+6,y:y+42,"class":"lab"},s,"≈₹"+tot.toFixed(1)+" L");hover(S("rect",{x:0,y:y,width:W,height:rh,fill:"transparent"},s),"<b>"+r[0]+"</b><br>"+r[4])});
+  })();
+
+  /* calculator */
+  (function(){
+    function money(n){var a=Math.abs(n),s=n<0?"−":"";return a>=1e5?s+"₹"+(a/1e5).toFixed(2)+" L":s+"₹"+Math.round(a).toLocaleString("en-IN")}
+    var iV=document.getElementById("iV"),iB=document.getElementById("iB"),iS=document.getElementById("iS"),modes=document.getElementsByName("mode");
+    function mode(){for(var i=0;i<modes.length;i++)if(modes[i].checked)return modes[i].value;return"hired"}
+    function run(){var v=+iV.value,b=+iB.value,s=+iS.value,m=mode();
+      document.getElementById("vV").textContent=v.toLocaleString("en-IN");document.getElementById("vB").textContent="₹"+b.toFixed(2);document.getElementById("vS").textContent="₹"+s.toFixed(2);
+      var p=profit(v,b,s,m),oh=fixedOf(v,m)/(v*30);
+      document.getElementById("oP").textContent=money(p)+" / month";
+      document.getElementById("oE").textContent=(p<0?"−":"+")+"₹"+Math.abs(p/(v*30)).toFixed(2);
+      document.getElementById("oO").textContent="₹"+oh.toFixed(2)+" an egg";
+      document.getElementById("oR").textContent=money(s*v*30);
+      document.getElementById("oBP").textContent="₹"+(b+.45+oh).toFixed(2);
+      var be=null;for(var q=300;q<=12000;q+=10){if(profit(q,b,s,m)>=0){be=q;break}}
+      document.getElementById("oBE").textContent=be?"about "+be.toLocaleString("en-IN")+" a day":"not reached at these prices";
+      document.getElementById("oW").textContent=money(s*v*28+b*v*5)}
+    [iV,iB,iS].forEach(function(i){i.addEventListener("input",run)});for(var i=0;i<modes.length;i++)modes[i].addEventListener("change",run);run();
+  })();
+
+  /* checklists */
+  (function(){
+    var KEY="egg-playbook-v2",saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){}
+    var groups=[["legal","p1"],["quality","p2"],["commercial","p3"]];
+    function update(){groups.forEach(function(g){var bx=document.querySelectorAll('[data-group="'+g[0]+'"] input'),n=0;bx.forEach(function(b){if(b.checked)n++;b.parentNode.classList.toggle("done",b.checked)});
+      document.getElementById(g[1]+"t").textContent=n+" / "+bx.length;document.getElementById(g[1]+"b").style.width=(100*n/bx.length)+"%"})}
+    groups.forEach(function(g){document.querySelectorAll('[data-group="'+g[0]+'"] input').forEach(function(b,i){var key=g[0]+i;b.checked=!!saved[key];
+      b.addEventListener("change",function(){saved[key]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}update()})})});update();
+  })();
+})();
+</script>
+</body>
+</html>
